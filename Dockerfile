@@ -1,6 +1,5 @@
 FROM node:16.19.0
 
-RUN npm i -g yarn
 RUN yarn global add @nestjs/cli typescript ts-node
 
 COPY package*.json /tmp/app/
