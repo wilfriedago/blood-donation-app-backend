@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, Module } from '@nestjs/common';
-import { FilesController } from './files.controller';
-import { MulterModule } from '@nestjs/platform-express';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { diskStorage } from 'multer';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import * as AWS from 'aws-sdk';
-import * as multerS3 from 'multer-s3';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as AWS from 'aws-sdk';
+import { diskStorage } from 'multer';
+import * as multerS3 from 'multer-s3';
+
 import { FileEntity } from './entities/file.entity';
+import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 
 @Module({
