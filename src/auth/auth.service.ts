@@ -27,6 +27,14 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
+  /**
+   * Validate login and return token and user
+   * @param loginDto {AuthEmailLoginDto}
+   * @param onlyAdmin {boolean}
+   * @returns {Promise<{token: string, user: User}>}
+   * @throws {HttpException}
+   * @docs https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-cheat-sheet
+   */
   async validateLogin(
     loginDto: AuthEmailLoginDto,
     onlyAdmin: boolean,
@@ -90,6 +98,12 @@ export class AuthService {
     }
   }
 
+  /**
+   * Validate register and return token and user
+   * @param authProvider {string}
+   * @param socialData {SocialInterface}
+   * @returns {Promise<{token: string, user: User}>}
+   */
   async validateSocialLogin(
     authProvider: string,
     socialData: SocialInterface,
@@ -147,6 +161,11 @@ export class AuthService {
     };
   }
 
+  /**
+   * Register user and send email
+   * @param dto {AuthUpdateDto}
+   * @returns {Promise<void>}
+   */
   async register(dto: AuthRegisterLoginDto): Promise<void> {
     const hash = crypto
       .createHash('sha256')
@@ -173,6 +192,11 @@ export class AuthService {
     });
   }
 
+  /**
+   * Confirm email by hash
+   * @param hash {string}
+   * @returns {Promise<void>}
+   */
   async confirmEmail(hash: string): Promise<void> {
     const user = await this.usersService.findOne({
       hash,
@@ -195,6 +219,12 @@ export class AuthService {
     await user.save();
   }
 
+  /**
+   * Send email with link to reset password
+   * @param email {string}
+   * @returns {Promise<void>}
+   * @docs https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#forgot-password-request
+   */
   async forgotPassword(email: string): Promise<void> {
     const user = await this.usersService.findOne({
       email,
@@ -229,6 +259,13 @@ export class AuthService {
     }
   }
 
+  /**
+   * Reset password by hash
+   * @param hash {string}
+   * @param password {string}
+   * @returns {Promise<void>}
+   * @docs https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#user-resets-password
+   */
   async resetPassword(hash: string, password: string): Promise<void> {
     const forgot = await this.forgotService.findOne({
       where: {
@@ -254,12 +291,23 @@ export class AuthService {
     await this.forgotService.softDelete(forgot.id);
   }
 
+  /**
+   * Get current user
+   * @param user {User}
+   * @returns {Promise<User>}
+   */
   async me(user: User): Promise<User> {
     return this.usersService.findOne({
       id: user.id,
     });
   }
 
+  /**
+   * Update user profile
+   * @param user {User}
+   * @param userDto {AuthUpdateDto}
+   * @returns {Promise<User>}
+   */
   async update(user: User, userDto: AuthUpdateDto): Promise<User> {
     if (userDto.password) {
       if (userDto.oldPassword) {
@@ -303,6 +351,11 @@ export class AuthService {
     });
   }
 
+  /**
+   * Soft delete user
+   * @param user {User}
+   * @returns {Promise<void>}
+   */
   async softDelete(user: User): Promise<void> {
     await this.usersService.softDelete(user.id);
   }
