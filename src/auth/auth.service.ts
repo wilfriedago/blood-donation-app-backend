@@ -50,11 +50,25 @@ export class AuthService {
           user.role.id,
         ))
     ) {
-      throw new HttpException(
+      // Don't tell the user that the email is not found to prevent brute force attacks
+      // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
+      /**
+        throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
             email: 'notFound',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+       */
+
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            message: 'invalidCredentials',
           },
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
@@ -86,11 +100,23 @@ export class AuthService {
 
       return { token, user: user };
     } else {
+      // Don't tell the user that the password is incorrect to prevent brute force attacks
+      // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
+      /** 
+        throw new HttpException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            password: 'incorrectPassword',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );*/
+
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
-            password: 'incorrectPassword',
+            message: 'invalidCredentials',
           },
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
@@ -231,7 +257,10 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new HttpException(
+      // Do not throw error if user not found to prevent email enumeration
+      // https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Authentication_and_Error_Messages
+      /**
+       * throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
@@ -240,11 +269,14 @@ export class AuthService {
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
+       */
+      return;
     } else {
       const hash = crypto
         .createHash('sha256')
         .update(randomStringGenerator())
         .digest('hex');
+
       await this.forgotService.create({
         hash,
         user,
