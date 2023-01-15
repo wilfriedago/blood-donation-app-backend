@@ -11,12 +11,12 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
-import { Role } from '../../roles/entities/role.entity';
-import { Status } from '../../statuses/entities/status.entity';
+import { Role } from '../../Auth/roles/entities/role.entity';
+import { Status } from '../../Auth/statuses/entities/status.entity';
 import { FileEntity } from '../../files/entities/file.entity';
 import * as bcrypt from 'bcryptjs';
 import { EntityHelper } from 'src/utils/entity-helper';
-import { AuthProvidersEnum } from 'src/auth-credentials/auth-providers.enum';
+import { AuthProvidersEnum } from 'src/Auth/auth-credentials/auth-providers.enum';
 import { Exclude, Expose } from 'class-transformer';
 
 @Entity()

@@ -1,22 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/entities/user.entity';
+import { User } from '@/users/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { RoleEnum } from 'src/roles/roles.enum';
-import { StatusEnum } from 'src/statuses/statuses.enum';
+import { RoleEnum } from '@/Auth/roles/roles.enum';
+import { StatusEnum } from '@/Auth/statuses/statuses.enum';
 import * as crypto from 'crypto';
 import { plainToClass } from 'class-transformer';
-import { Status } from 'src/statuses/entities/status.entity';
-import { Role } from 'src/roles/entities/role.entity';
+import { Status } from '@/Auth/statuses/entities/status.entity';
+import { Role } from '@/Auth/roles/entities/role.entity';
 import { AuthProvidersEnum } from './auth-providers.enum';
-import { SocialInterface } from 'src/social/interfaces/social.interface';
+import { SocialInterface } from '@/Auth/social/interfaces/social.interface';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
-import { UsersService } from 'src/users/users.service';
-import { ForgotService } from 'src/forgot/forgot.service';
-import { MailService } from 'src/mail/mail.service';
+import { UsersService } from '@/users/users.service';
+import { ForgotService } from '@/Auth/forgot/forgot.service';
+import { MailService } from '@/mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -329,7 +329,7 @@ export class AuthService {
    * @returns {Promise<User>}
    */
   async me(user: User): Promise<User> {
-    return this.usersService.findOne({
+    return await this.usersService.findOne({
       id: user.id,
     });
   }
@@ -378,7 +378,7 @@ export class AuthService {
 
     await this.usersService.update(user.id, userDto);
 
-    return this.usersService.findOne({
+    return await this.usersService.findOne({
       id: user.id,
     });
   }

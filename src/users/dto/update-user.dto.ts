@@ -3,9 +3,9 @@ import { CreateUserDto } from './create-user.dto';
 
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '../../roles/entities/role.entity';
+import { Role } from '../../Auth/roles/entities/role.entity';
 import { IsEmail, IsOptional, MinLength, Validate } from 'class-validator';
-import { Status } from '../../statuses/entities/status.entity';
+import { Status } from '../../Auth/statuses/entities/status.entity';
 import { IsNotExist } from '../../utils/validators/is-not-exists.validator';
 import { FileEntity } from '../../files/entities/file.entity';
 import { IsExist } from '../../utils/validators/is-exists.validator';

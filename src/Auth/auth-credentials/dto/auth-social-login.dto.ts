@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Allow, IsNotEmpty } from 'class-validator';
-import { Tokens } from 'src/social/tokens';
+import { Tokens } from 'src/Auth/social/tokens';
 import { AuthProvidersEnum } from '../auth-providers.enum';
 
 export class AuthSocialLoginDto {
