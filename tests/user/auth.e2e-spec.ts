@@ -1,10 +1,11 @@
 import * as request from 'supertest';
+
 import {
   APP_URL,
-  TESTER_EMAIL,
-  TESTER_PASSWORD,
   MAIL_HOST,
   MAIL_PORT,
+  TESTER_EMAIL,
+  TESTER_PASSWORD,
 } from '../utils/constants';
 
 describe('Auth user (e2e)', () => {

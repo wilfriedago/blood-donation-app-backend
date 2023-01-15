@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
+
 import { AppModule } from './app.module';
 import validationOptions from './utils/validation-options';
 

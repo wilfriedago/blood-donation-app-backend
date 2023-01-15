@@ -1,32 +1,34 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { FilesModule } from './files/files.module';
-import { AuthModule } from '@/Auth/auth-credentials/auth.module';
-import databaseConfig from '@/Config/database.config';
-import authConfig from '@/Config/auth.config';
-import appConfig from './Config/app.config';
-import mailConfig from '@/Config/mail.config';
-import fileConfig from '@/Config/file.config';
-import facebookConfig from '@/Config/facebook.config';
-import googleConfig from '@/Config/google.config';
-import twitterConfig from '@/Config/twitter.config';
-import appleConfig from '@/Config/apple.config';
-import * as path from 'path';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HeaderResolver } from 'nestjs-i18n';
+import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
+import * as path from 'path';
+import { DataSource } from 'typeorm';
+
 import { AuthAppleModule } from '@/Auth/auth-apple/auth-apple.module';
+import { AuthModule } from '@/Auth/auth-credentials/auth.module';
 import { AuthFacebookModule } from '@/Auth/auth-facebook/auth-facebook.module';
 import { AuthGoogleModule } from '@/Auth/auth-google/auth-google.module';
 import { AuthTwitterModule } from '@/Auth/auth-twitter/auth-twitter.module';
-import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
-import { HeaderResolver } from 'nestjs-i18n';
-import { TypeOrmConfigService } from './database/typeorm-config.service';
-import { MailConfigService } from './mail/mail-config.service';
 import { ForgotModule } from '@/Auth/forgot/forgot.module';
-import { MailModule } from './mail/mail.module';
+import appConfig from '@/Config/app.config';
+import appleConfig from '@/Config/apple.config';
+import authConfig from '@/Config/auth.config';
+import databaseConfig from '@/Config/database.config';
+import facebookConfig from '@/Config/facebook.config';
+import fileConfig from '@/Config/file.config';
+import googleConfig from '@/Config/google.config';
+import mailConfig from '@/Config/mail.config';
+import twitterConfig from '@/Config/twitter.config';
+
+import { TypeOrmConfigService } from './database/typeorm-config.service';
+import { FilesModule } from './files/files.module';
 import { HomeModule } from './home/home.module';
-import { DataSource } from 'typeorm';
+import { MailModule } from './mail/mail.module';
+import { MailConfigService } from './mail/mail-config.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [

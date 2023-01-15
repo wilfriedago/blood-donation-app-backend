@@ -1,22 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { User } from '@/users/entities/user.entity';
-import * as bcrypt from 'bcryptjs';
-import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AuthUpdateDto } from './dto/auth-update.dto';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { RoleEnum } from '@/Auth/roles/roles.enum';
-import { StatusEnum } from '@/Auth/statuses/statuses.enum';
-import * as crypto from 'crypto';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
 import { plainToClass } from 'class-transformer';
-import { Status } from '@/Auth/statuses/entities/status.entity';
-import { Role } from '@/Auth/roles/entities/role.entity';
-import { AuthProvidersEnum } from './auth-providers.enum';
-import { SocialInterface } from '@/Auth/social/interfaces/social.interface';
-import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
-import { UsersService } from '@/users/users.service';
+import * as crypto from 'crypto';
+
 import { ForgotService } from '@/Auth/forgot/forgot.service';
+import { Role } from '@/Auth/roles/entities/role.entity';
+import { RoleEnum } from '@/Auth/roles/roles.enum';
+import { SocialInterface } from '@/Auth/social/interfaces/social.interface';
+import { Status } from '@/Auth/statuses/entities/status.entity';
+import { StatusEnum } from '@/Auth/statuses/statuses.enum';
 import { MailService } from '@/mail/mail.service';
+import { User } from '@/users/entities/user.entity';
+import { UsersService } from '@/users/users.service';
+
+import { AuthProvidersEnum } from './auth-providers.enum';
+import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
+import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
+import { AuthUpdateDto } from './dto/auth-update.dto';
 
 @Injectable()
 export class AuthService {
