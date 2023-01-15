@@ -16,10 +16,11 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/Auth/roles/roles.decorator';
-import { RoleEnum } from 'src/Auth/roles/roles.enum';
-import { RolesGuard } from 'src/Auth/roles/roles.guard';
-import { infinityPagination } from 'src/utils/infinity-pagination';
+
+import { Roles } from '@/Auth/roles/roles.decorator';
+import { RoleEnum } from '@/Auth/roles/roles.enum';
+import { RolesGuard } from '@/Auth/roles/roles.guard';
+import { infinityPagination } from '@/utils/infinity-pagination';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';

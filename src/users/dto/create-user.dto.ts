@@ -8,11 +8,11 @@ import {
   Validate,
 } from 'class-validator';
 
-import { Role } from '../../Auth/roles/entities/role.entity';
-import { Status } from '../../Auth/statuses/entities/status.entity';
-import { FileEntity } from '../../files/entities/file.entity';
-import { IsExist } from '../../utils/validators/is-exists.validator';
-import { IsNotExist } from '../../utils/validators/is-not-exists.validator';
+import { Role } from '@/Auth/roles/entities/role.entity';
+import { Status } from '@/Auth/statuses/entities/status.entity';
+import { FileEntity } from '@/files/entities/file.entity';
+import { IsExist } from '@/utils/validators/is-exists.validator';
+import { IsNotExist } from '@/utils/validators/is-not-exists.validator';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'test1@example.com' })

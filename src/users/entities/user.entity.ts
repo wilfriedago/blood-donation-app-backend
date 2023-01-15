@@ -1,7 +1,5 @@
 import * as bcrypt from 'bcryptjs';
 import { Exclude, Expose } from 'class-transformer';
-import { AuthProvidersEnum } from 'src/Auth/auth-credentials/auth-providers.enum';
-import { EntityHelper } from 'src/utils/entity-helper';
 import {
   AfterLoad,
   BeforeInsert,
@@ -16,9 +14,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Role } from '../../Auth/roles/entities/role.entity';
-import { Status } from '../../Auth/statuses/entities/status.entity';
-import { FileEntity } from '../../files/entities/file.entity';
+import { AuthProvidersEnum } from '@/Auth/auth-credentials/auth-providers.enum';
+import { Role } from '@/Auth/roles/entities/role.entity';
+import { Status } from '@/Auth/statuses/entities/status.entity';
+import { FileEntity } from '@/files/entities/file.entity';
+import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity()
 export class User extends EntityHelper {

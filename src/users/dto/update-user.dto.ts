@@ -3,11 +3,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsOptional, MinLength, Validate } from 'class-validator';
 
-import { Role } from '../../Auth/roles/entities/role.entity';
-import { Status } from '../../Auth/statuses/entities/status.entity';
-import { FileEntity } from '../../files/entities/file.entity';
-import { IsExist } from '../../utils/validators/is-exists.validator';
-import { IsNotExist } from '../../utils/validators/is-not-exists.validator';
+import { Role } from '@/Auth/roles/entities/role.entity';
+import { Status } from '@/Auth/statuses/entities/status.entity';
+import { FileEntity } from '@/files/entities/file.entity';
+import { IsExist } from '@/utils/validators/is-exists.validator';
+import { IsNotExist } from '@/utils/validators/is-not-exists.validator';
+
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
