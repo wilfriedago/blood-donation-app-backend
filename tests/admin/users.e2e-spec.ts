@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 
-import { RoleEnum } from '../../src/Auth/roles/roles.enum';
-import { StatusEnum } from '../../src/Auth/statuses/statuses.enum';
+import { RoleEnum } from '../../src/roles/roles.enum';
+import { StatusEnum } from '../../src/statuses/statuses.enum';
 import { ADMIN_EMAIL, ADMIN_PASSWORD, APP_URL } from '../utils/constants';
 
 describe('Users admin (e2e)', () => {
