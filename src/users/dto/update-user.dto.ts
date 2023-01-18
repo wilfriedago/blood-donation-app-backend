@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsOptional, MinLength, Validate } from 'class-validator';
 
-import { Role } from '@/Auth/roles/entities/role.entity';
-import { Status } from '@/Auth/statuses/entities/status.entity';
 import { FileEntity } from '@/files/entities/file.entity';
+import { Role } from '@/roles/entities/role.entity';
+import { Status } from '@/statuses/entities/status.entity';
 import { IsExist } from '@/utils/validators/is-exists.validator';
 import { IsNotExist } from '@/utils/validators/is-not-exists.validator';
 

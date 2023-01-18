@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Status } from '@/Auth/statuses/entities/status.entity';
+import { Status } from '@/statuses/entities/status.entity';
 
 import { StatusSeedService } from './status-seed.service';
 

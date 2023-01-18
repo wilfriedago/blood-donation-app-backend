@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { RoleEnum } from '@/Auth/roles/roles.enum';
-import { StatusEnum } from '@/Auth/statuses/statuses.enum';
+import { RoleEnum } from '@/roles/roles.enum';
+import { StatusEnum } from '@/statuses/statuses.enum';
 import { User } from '@/users/entities/user.entity';
 
 @Injectable()

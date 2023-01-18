@@ -14,10 +14,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { AuthProvidersEnum } from '@/Auth/auth-credentials/auth-providers.enum';
-import { Role } from '@/Auth/roles/entities/role.entity';
-import { Status } from '@/Auth/statuses/entities/status.entity';
+import { AuthProvidersEnum } from '@/auth/auth-credentials/auth-providers.enum';
 import { FileEntity } from '@/files/entities/file.entity';
+import { Role } from '@/roles/entities/role.entity';
+import { Status } from '@/statuses/entities/status.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity()

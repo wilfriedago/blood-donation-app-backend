@@ -17,9 +17,9 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '@/Auth/roles/roles.decorator';
-import { RoleEnum } from '@/Auth/roles/roles.enum';
-import { RolesGuard } from '@/Auth/roles/roles.guard';
+import { Roles } from '@/roles/roles.decorator';
+import { RoleEnum } from '@/roles/roles.enum';
+import { RolesGuard } from '@/roles/roles.guard';
 import { infinityPagination } from '@/utils/infinity-pagination';
 
 import { CreateUserDto } from './dto/create-user.dto';

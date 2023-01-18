@@ -3,8 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import appConfig from '@/Config/app.config';
-import databaseConfig from '@/Config/database.config';
+import appConfig from '@/config/app.config';
+import databaseConfig from '@/config/database.config';
 import { TypeOrmConfigService } from '@/database/typeorm-config.service';
 
 import { RoleSeedModule } from './role/role-seed.module';
