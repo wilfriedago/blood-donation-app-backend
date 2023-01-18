@@ -1,7 +1,8 @@
-import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { MailerService } from '@nestjs-modules/mailer';
 import { I18n, I18nRequestScopeService } from 'nestjs-i18n';
+
 import { MailData } from './interfaces/mail-data.interface';
 
 @Injectable()
@@ -39,13 +40,13 @@ export class MailService {
     await this.mailerService.sendMail({
       to: mailData.to,
       subject: await this.i18n.t('common.resetPassword'),
-      text: `${this.configService.get('app.frontendDomain')}/password-change/${
+      text: `${this.configService.get('app.frontendDomain')}/reset-password/${
         mailData.data.hash
       } ${await this.i18n.t('common.resetPassword')}`,
       template: 'reset-password',
       context: {
         title: await this.i18n.t('common.resetPassword'),
-        url: `${this.configService.get('app.frontendDomain')}/password-change/${
+        url: `${this.configService.get('app.frontendDomain')}/reset-password/${
           mailData.data.hash
         }`,
         actionTitle: await this.i18n.t('common.resetPassword'),

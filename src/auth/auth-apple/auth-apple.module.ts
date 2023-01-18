@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthAppleService } from './auth-apple.service';
 import { ConfigModule } from '@nestjs/config';
+
+import { AuthModule } from '@/auth/auth-credentials/auth.module';
+
 import { AuthAppleController } from './auth-apple.controller';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthAppleService } from './auth-apple.service';
 
 @Module({
   imports: [ConfigModule, AuthModule],

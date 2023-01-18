@@ -1,28 +1,30 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
+  Controller,
   DefaultValuePipe,
-  ParseIntPipe,
-  HttpStatus,
+  Delete,
+  Get,
   HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
   SerializeOptions,
+  UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+import { Roles } from '@/roles/roles.decorator';
+import { RoleEnum } from '@/roles/roles.enum';
+import { RolesGuard } from '@/roles/roles.guard';
+import { infinityPagination } from '@/utils/infinity-pagination';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/roles/roles.decorator';
-import { RoleEnum } from 'src/roles/roles.enum';
-import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/roles/roles.guard';
-import { infinityPagination } from 'src/utils/infinity-pagination';
+import { UsersService } from './users.service';
 
 @ApiBearerAuth()
 @Roles(RoleEnum.admin)

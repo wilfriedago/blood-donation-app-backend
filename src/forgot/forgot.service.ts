@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial } from 'src/utils/types/deep-partial.type';
-import { FindOptions } from 'src/utils/types/find-options.type';
 import { Repository } from 'typeorm';
+
+import { DeepPartial } from '@/utils/types/deep-partial.type';
+import { FindOptions } from '@/utils/types/find-options.type';
+
 import { Forgot } from './entities/forgot.entity';
 
 @Injectable()

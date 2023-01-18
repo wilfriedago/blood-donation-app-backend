@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthTwitterService } from './auth-twitter.service';
 import { ConfigModule } from '@nestjs/config';
+
+import { AuthModule } from '@/auth/auth-credentials/auth.module';
+
 import { AuthTwitterController } from './auth-twitter.controller';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthTwitterService } from './auth-twitter.service';
 
 @Module({
   imports: [ConfigModule, AuthModule],

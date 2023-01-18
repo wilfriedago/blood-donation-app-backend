@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoleEnum } from 'src/roles/roles.enum';
-import { StatusEnum } from 'src/statuses/statuses.enum';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
+
+import { RoleEnum } from '@/roles/roles.enum';
+import { StatusEnum } from '@/statuses/statuses.enum';
+import { User } from '@/users/entities/user.entity';
 
 @Injectable()
 export class UserSeedService {

@@ -1,22 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/entities/user.entity';
-import * as bcrypt from 'bcryptjs';
-import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-import { AuthUpdateDto } from './dto/auth-update.dto';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { RoleEnum } from 'src/roles/roles.enum';
-import { StatusEnum } from 'src/statuses/statuses.enum';
-import * as crypto from 'crypto';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
 import { plainToClass } from 'class-transformer';
-import { Status } from 'src/statuses/entities/status.entity';
-import { Role } from 'src/roles/entities/role.entity';
+import * as crypto from 'crypto';
+
+import { ForgotService } from '@/forgot/forgot.service';
+import { MailService } from '@/mail/mail.service';
+import { Role } from '@/roles/entities/role.entity';
+import { RoleEnum } from '@/roles/roles.enum';
+import { SocialInterface } from '@/social/interfaces/social.interface';
+import { Status } from '@/statuses/entities/status.entity';
+import { StatusEnum } from '@/statuses/statuses.enum';
+import { User } from '@/users/entities/user.entity';
+import { UsersService } from '@/users/users.service';
+
 import { AuthProvidersEnum } from './auth-providers.enum';
-import { SocialInterface } from 'src/social/interfaces/social.interface';
+import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
-import { UsersService } from 'src/users/users.service';
-import { ForgotService } from 'src/forgot/forgot.service';
-import { MailService } from 'src/mail/mail.service';
+import { AuthUpdateDto } from './dto/auth-update.dto';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +29,14 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
+  /**
+   * Validate login and return token and user
+   * @param loginDto {AuthEmailLoginDto}
+   * @param onlyAdmin {boolean}
+   * @returns {Promise<{token: string, user: User}>}
+   * @throws {HttpException}
+   * @docs https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-cheat-sheet
+   */
   async validateLogin(
     loginDto: AuthEmailLoginDto,
     onlyAdmin: boolean,
@@ -42,11 +52,25 @@ export class AuthService {
           user.role.id,
         ))
     ) {
-      throw new HttpException(
+      // Don't tell the user that the email is not found to prevent brute force attacks
+      // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
+      /**
+        throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
             email: 'notFound',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+       */
+
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            message: 'invalidCredentials',
           },
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
@@ -78,11 +102,23 @@ export class AuthService {
 
       return { token, user: user };
     } else {
+      // Don't tell the user that the password is incorrect to prevent brute force attacks
+      // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#login
+      /** 
+        throw new HttpException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            password: 'incorrectPassword',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );*/
+
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
-            password: 'incorrectPassword',
+            message: 'invalidCredentials',
           },
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
@@ -90,6 +126,12 @@ export class AuthService {
     }
   }
 
+  /**
+   * Validate register and return token and user
+   * @param authProvider {string}
+   * @param socialData {SocialInterface}
+   * @returns {Promise<{token: string, user: User}>}
+   */
   async validateSocialLogin(
     authProvider: string,
     socialData: SocialInterface,
@@ -147,6 +189,11 @@ export class AuthService {
     };
   }
 
+  /**
+   * Register user and send email
+   * @param dto {AuthUpdateDto}
+   * @returns {Promise<void>}
+   */
   async register(dto: AuthRegisterLoginDto): Promise<void> {
     const hash = crypto
       .createHash('sha256')
@@ -173,6 +220,11 @@ export class AuthService {
     });
   }
 
+  /**
+   * Confirm email by hash
+   * @param hash {string}
+   * @returns {Promise<void>}
+   */
   async confirmEmail(hash: string): Promise<void> {
     const user = await this.usersService.findOne({
       hash,
@@ -195,13 +247,22 @@ export class AuthService {
     await user.save();
   }
 
+  /**
+   * Send email with link to reset password
+   * @param email {string}
+   * @returns {Promise<void>}
+   * @docs https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#forgot-password-request
+   */
   async forgotPassword(email: string): Promise<void> {
     const user = await this.usersService.findOne({
       email,
     });
 
     if (!user) {
-      throw new HttpException(
+      // Do not throw error if user not found to prevent email enumeration
+      // https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Authentication_and_Error_Messages
+      /**
+       * throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
@@ -210,11 +271,14 @@ export class AuthService {
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
+       */
+      return;
     } else {
       const hash = crypto
         .createHash('sha256')
         .update(randomStringGenerator())
         .digest('hex');
+
       await this.forgotService.create({
         hash,
         user,
@@ -229,6 +293,13 @@ export class AuthService {
     }
   }
 
+  /**
+   * Reset password by hash
+   * @param hash {string}
+   * @param password {string}
+   * @returns {Promise<void>}
+   * @docs https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#user-resets-password
+   */
   async resetPassword(hash: string, password: string): Promise<void> {
     const forgot = await this.forgotService.findOne({
       where: {
@@ -254,12 +325,23 @@ export class AuthService {
     await this.forgotService.softDelete(forgot.id);
   }
 
+  /**
+   * Get current user
+   * @param user {User}
+   * @returns {Promise<User>}
+   */
   async me(user: User): Promise<User> {
-    return this.usersService.findOne({
+    return await this.usersService.findOne({
       id: user.id,
     });
   }
 
+  /**
+   * Update user profile
+   * @param user {User}
+   * @param userDto {AuthUpdateDto}
+   * @returns {Promise<User>}
+   */
   async update(user: User, userDto: AuthUpdateDto): Promise<User> {
     if (userDto.password) {
       if (userDto.oldPassword) {
@@ -298,11 +380,16 @@ export class AuthService {
 
     await this.usersService.update(user.id, userDto);
 
-    return this.usersService.findOne({
+    return await this.usersService.findOne({
       id: user.id,
     });
   }
 
+  /**
+   * Soft delete user
+   * @param user {User}
+   * @returns {Promise<void>}
+   */
   async softDelete(user: User): Promise<void> {
     await this.usersService.softDelete(user.id);
   }

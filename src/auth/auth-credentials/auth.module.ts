@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+
+import { ForgotModule } from '@/forgot/forgot.module';
+import { MailModule } from '@/mail/mail.module';
+import { UsersModule } from '@/users/users.module';
+import { IsExist } from '@/utils/validators/is-exists.validator';
+import { IsNotExist } from '@/utils/validators/is-not-exists.validator';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AnonymousStrategy } from './strategies/anonymous.strategy';
-import { UsersModule } from 'src/users/users.module';
-import { ForgotModule } from 'src/forgot/forgot.module';
-import { MailModule } from 'src/mail/mail.module';
-import { IsExist } from 'src/utils/validators/is-exists.validator';
-import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [

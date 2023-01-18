@@ -1,14 +1,15 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Allow } from 'class-validator';
 import {
+  AfterInsert,
+  AfterLoad,
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  AfterLoad,
-  AfterInsert,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
-import { Allow } from 'class-validator';
-import { EntityHelper } from 'src/utils/entity-helper';
-import appConfig from '../../config/app.config';
+
+import appConfig from '@/config/app.config';
+import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity({ name: 'file' })
 export class FileEntity extends EntityHelper {
