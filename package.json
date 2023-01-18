@@ -26,7 +26,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "env-cmd jest --config ./tests/jest-e2e.json"
+    "test:e2e": "env-cmd jest --config ./tests/jest-e2e.json",
+    "services:dev": "docker compose -f docker-compose.yaml up -d postgres adminer maildev redis",
+    "services:postgres": "docker compose -f docker-compose.yaml up -d postgres",
+    "services:adminer": "docker compose -f docker-compose.yaml up -d adminer",
+    "services:maildev": "docker compose -f docker-compose.yaml up -d maildev",
+    "services:redis": "docker compose -f docker-compose.yaml up -d redis",
+    "services:stop": "docker compose -f docker-compose.yaml stop",
+    "services:down": "docker compose -f docker-compose.yaml down && docker volume prune -f"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "1.8.1",
