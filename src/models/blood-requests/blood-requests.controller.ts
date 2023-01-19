@@ -22,28 +22,28 @@ import { RoleEnum } from '@/roles/roles.enum';
 import { RolesGuard } from '@/roles/roles.guard';
 import { infinityPagination } from '@/utils/infinity-pagination';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersService } from './users.service';
+import { BloodRequestsService } from './blood-requests.service';
+import { CreateBloodRequestDto } from './dto/create-blood-request.dto';
+import { UpdateBloodRequestDto } from './dto/update-blood-request.dto';
 
 @ApiBearerAuth()
 @Roles(RoleEnum.admin)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
-@ApiTags('Users')
+@ApiTags('BloodRequests')
 @Controller({
-  path: 'users',
+  path: 'blood-requests',
   version: '1',
 })
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class BloodRequestsController {
+  constructor(private readonly bloodRequestsService: BloodRequestsService) {}
 
   @SerializeOptions({
     groups: ['admin'],
   })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createProfileDto: CreateUserDto) {
-    return this.usersService.create(createProfileDto);
+  async create(@Body() createProfileDto: CreateBloodRequestDto) {
+    return await this.bloodRequestsService.create(createProfileDto);
   }
 
   @SerializeOptions({
@@ -55,15 +55,10 @@ export class UsersController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
-    if (limit > 50) {
-      limit = 50;
-    }
+    if (limit > 50) limit = 50;
 
     return infinityPagination(
-      await this.usersService.findManyWithPagination({
-        page,
-        limit,
-      }),
+      await this.bloodRequestsService.findManyWithPagination({ page, limit }),
       { page, limit },
     );
   }
@@ -73,8 +68,8 @@ export class UsersController {
   })
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne({ id: +id });
+  async findOne(@Param('id') id: string) {
+    return await this.bloodRequestsService.findOne({ id: +id });
   }
 
   @SerializeOptions({
@@ -82,13 +77,19 @@ export class UsersController {
   })
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: number, @Body() updateProfileDto: UpdateUserDto) {
-    return this.usersService.update(id, updateProfileDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateProfileDto: UpdateBloodRequestDto,
+  ) {
+    return await this.bloodRequestsService.update(+id, updateProfileDto);
   }
 
+  @SerializeOptions({
+    groups: ['admin'],
+  })
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: number) {
-    return this.usersService.softDelete(id);
+  async remove(@Param('id') id: number) {
+    await this.bloodRequestsService.softDelete(+id);
   }
 }

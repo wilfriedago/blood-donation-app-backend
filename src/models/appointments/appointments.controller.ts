@@ -22,28 +22,28 @@ import { RoleEnum } from '@/roles/roles.enum';
 import { RolesGuard } from '@/roles/roles.guard';
 import { infinityPagination } from '@/utils/infinity-pagination';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersService } from './users.service';
+import { AppointmentsService } from './appointments.service';
+import { CreateAppointmentDto } from './dto/create-appointment.dto';
+import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 
 @ApiBearerAuth()
 @Roles(RoleEnum.admin)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
-@ApiTags('Users')
+@ApiTags('Appointments')
 @Controller({
-  path: 'users',
+  path: 'appointments',
   version: '1',
 })
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class AppointmentsController {
+  constructor(private readonly appointmentsService: AppointmentsService) {}
 
   @SerializeOptions({
     groups: ['admin'],
   })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createProfileDto: CreateUserDto) {
-    return this.usersService.create(createProfileDto);
+  async create(@Body() createProfileDto: CreateAppointmentDto) {
+    return await this.appointmentsService.create(createProfileDto);
   }
 
   @SerializeOptions({
@@ -55,15 +55,10 @@ export class UsersController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
-    if (limit > 50) {
-      limit = 50;
-    }
+    if (limit > 50) limit = 50;
 
     return infinityPagination(
-      await this.usersService.findManyWithPagination({
-        page,
-        limit,
-      }),
+      await this.appointmentsService.findManyWithPagination({ page, limit }),
       { page, limit },
     );
   }
@@ -73,8 +68,8 @@ export class UsersController {
   })
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne({ id: +id });
+  async findOne(@Param('id') id: string) {
+    return await this.appointmentsService.findOne({ id: +id });
   }
 
   @SerializeOptions({
@@ -82,13 +77,19 @@ export class UsersController {
   })
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: number, @Body() updateProfileDto: UpdateUserDto) {
-    return this.usersService.update(id, updateProfileDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateProfileDto: UpdateAppointmentDto,
+  ) {
+    return await this.appointmentsService.update(+id, updateProfileDto);
   }
 
+  @SerializeOptions({
+    groups: ['admin'],
+  })
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: number) {
-    return this.usersService.softDelete(id);
+  async remove(@Param('id') id: number) {
+    await this.appointmentsService.softDelete(+id);
   }
 }

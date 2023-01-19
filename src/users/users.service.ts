@@ -13,35 +13,36 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private readonly usersRepository: Repository<User>,
   ) {}
 
-  create(createProfileDto: CreateUserDto) {
-    return this.usersRepository.save(
+  async create(createProfileDto: CreateUserDto): Promise<User> {
+    return await this.usersRepository.save(
       this.usersRepository.create(createProfileDto),
     );
   }
 
-  findManyWithPagination(paginationOptions: IPaginationOptions) {
-    return this.usersRepository.find({
-      skip: (paginationOptions.page - 1) * paginationOptions.limit,
-      take: paginationOptions.limit,
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<User[]> {
+    const { page, limit } = paginationOptions;
+    return await this.usersRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
     });
   }
 
-  findOne(fields: EntityCondition<User>) {
-    return this.usersRepository.findOne({
+  async findOne(fields: EntityCondition<User>): Promise<User> {
+    return await this.usersRepository.findOne({
       where: fields,
     });
   }
 
-  update(id: number, updateProfileDto: UpdateUserDto) {
-    return this.usersRepository.save(
-      this.usersRepository.create({
-        id,
-        ...updateProfileDto,
-      }),
-    );
+  async update(id: number, updateProfileDto: UpdateUserDto): Promise<User> {
+    return await this.usersRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
   async softDelete(id: number): Promise<void> {
