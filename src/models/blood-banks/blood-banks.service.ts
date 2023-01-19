@@ -1,27 +1,54 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateBloodBankDto } from './dto/create-blood-bank.dto';
 import { UpdateBloodBankDto } from './dto/update-blood-bank.dto';
+import { BloodBank } from './entities/blood-bank.entity';
 
 @Injectable()
 export class BloodBanksService {
-  create(createBloodBankDto: CreateBloodBankDto) {
-    return 'This action adds a new bloodBank';
+  constructor(
+    @InjectRepository(BloodBank)
+    private readonly bloodBanksRepository: Repository<BloodBank>,
+  ) {}
+
+  async create(createProfileDto: CreateBloodBankDto): Promise<BloodBank> {
+    return await this.bloodBanksRepository.save(
+      this.bloodBanksRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all bloodBanks`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<BloodBank[]> {
+    const { page, limit } = paginationOptions;
+    return await this.bloodBanksRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bloodBank`;
+  async findOne(fields: EntityCondition<BloodBank>): Promise<BloodBank> {
+    return await this.bloodBanksRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateBloodBankDto: UpdateBloodBankDto) {
-    return `This action updates a #${id} bloodBank`;
+  async update(
+    id: number,
+    updateProfileDto: UpdateBloodBankDto,
+  ): Promise<BloodBank> {
+    return await this.bloodBanksRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bloodBank`;
+  async softDelete(id: number): Promise<void> {
+    await this.bloodBanksRepository.softDelete(id);
   }
 }

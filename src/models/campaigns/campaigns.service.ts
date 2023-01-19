@@ -1,27 +1,54 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
+import { Campaign } from './entities/campaign.entity';
 
 @Injectable()
 export class CampaignsService {
-  create(createCampaignDto: CreateCampaignDto) {
-    return 'This action adds a new campaign';
+  constructor(
+    @InjectRepository(Campaign)
+    private readonly campaignsRepository: Repository<Campaign>,
+  ) {}
+
+  async create(createProfileDto: CreateCampaignDto): Promise<Campaign> {
+    return await this.campaignsRepository.save(
+      this.campaignsRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all campaigns`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<Campaign[]> {
+    const { page, limit } = paginationOptions;
+    return await this.campaignsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} campaign`;
+  async findOne(fields: EntityCondition<Campaign>): Promise<Campaign> {
+    return await this.campaignsRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateCampaignDto: UpdateCampaignDto) {
-    return `This action updates a #${id} campaign`;
+  async update(
+    id: number,
+    updateProfileDto: UpdateCampaignDto,
+  ): Promise<Campaign> {
+    return await this.campaignsRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} campaign`;
+  async softDelete(id: number): Promise<void> {
+    await this.campaignsRepository.softDelete(id);
   }
 }

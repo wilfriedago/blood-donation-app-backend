@@ -1,27 +1,54 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+import { Appointment } from './entities/appointment.entity';
 
 @Injectable()
 export class AppointmentsService {
-  create(createAppointmentDto: CreateAppointmentDto) {
-    return 'This action adds a new appointment';
+  constructor(
+    @InjectRepository(Appointment)
+    private readonly appointmentsRepository: Repository<Appointment>,
+  ) {}
+
+  async create(createProfileDto: CreateAppointmentDto): Promise<Appointment> {
+    return await this.appointmentsRepository.save(
+      this.appointmentsRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all appointments`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<Appointment[]> {
+    const { page, limit } = paginationOptions;
+    return await this.appointmentsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} appointment`;
+  async findOne(fields: EntityCondition<Appointment>): Promise<Appointment> {
+    return await this.appointmentsRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
-    return `This action updates a #${id} appointment`;
+  async update(
+    id: number,
+    updateProfileDto: UpdateAppointmentDto,
+  ): Promise<Appointment> {
+    return await this.appointmentsRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} appointment`;
+  async softDelete(id: number): Promise<void> {
+    await this.appointmentsRepository.softDelete(id);
   }
 }

@@ -1,46 +1,95 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
+  SerializeOptions,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+import { Roles } from '@/roles/roles.decorator';
+import { RoleEnum } from '@/roles/roles.enum';
+import { RolesGuard } from '@/roles/roles.guard';
+import { infinityPagination } from '@/utils/infinity-pagination';
 
 import { BloodGroupsService } from './blood-groups.service';
 import { CreateBloodGroupDto } from './dto/create-blood-group.dto';
 import { UpdateBloodGroupDto } from './dto/update-blood-group.dto';
 
-@Controller('blood-groups')
+@ApiBearerAuth()
+@Roles(RoleEnum.admin)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+@ApiTags('BloodGroups')
+@Controller({
+  path: 'blood-groups',
+  version: '1',
+})
 export class BloodGroupsController {
   constructor(private readonly bloodGroupsService: BloodGroupsService) {}
 
+  @SerializeOptions({
+    groups: ['admin'],
+  })
   @Post()
-  create(@Body() createBloodGroupDto: CreateBloodGroupDto) {
-    return this.bloodGroupsService.create(createBloodGroupDto);
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createProfileDto: CreateBloodGroupDto) {
+    return await this.bloodGroupsService.create(createProfileDto);
   }
 
+  @SerializeOptions({
+    groups: ['admin'],
+  })
   @Get()
-  findAll() {
-    return this.bloodGroupsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bloodGroupsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBloodGroupDto: UpdateBloodGroupDto,
+  @HttpCode(HttpStatus.OK)
+  async findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
-    return this.bloodGroupsService.update(+id, updateBloodGroupDto);
+    if (limit > 50) limit = 50;
+
+    return infinityPagination(
+      await this.bloodGroupsService.findManyWithPagination({ page, limit }),
+      { page, limit },
+    );
   }
 
+  @SerializeOptions({
+    groups: ['admin'],
+  })
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  async findOne(@Param('id') id: string) {
+    return await this.bloodGroupsService.findOne({ id: +id });
+  }
+
+  @SerializeOptions({
+    groups: ['admin'],
+  })
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Body() updateProfileDto: UpdateBloodGroupDto,
+  ) {
+    return await this.bloodGroupsService.update(+id, updateProfileDto);
+  }
+
+  @SerializeOptions({
+    groups: ['admin'],
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bloodGroupsService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: number) {
+    await this.bloodGroupsService.softDelete(+id);
   }
 }

@@ -1,27 +1,51 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateDonorDto } from './dto/create-donor.dto';
 import { UpdateDonorDto } from './dto/update-donor.dto';
+import { Donor } from './entities/donor.entity';
 
 @Injectable()
 export class DonorsService {
-  create(createDonorDto: CreateDonorDto) {
-    return 'This action adds a new donor';
+  constructor(
+    @InjectRepository(Donor)
+    private readonly donorsRepository: Repository<Donor>,
+  ) {}
+
+  async create(createProfileDto: CreateDonorDto): Promise<Donor> {
+    return await this.donorsRepository.save(
+      this.donorsRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all donors`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<Donor[]> {
+    const { page, limit } = paginationOptions;
+    return await this.donorsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} donor`;
+  async findOne(fields: EntityCondition<Donor>): Promise<Donor> {
+    return await this.donorsRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateDonorDto: UpdateDonorDto) {
-    return `This action updates a #${id} donor`;
+  async update(id: number, updateProfileDto: UpdateDonorDto): Promise<Donor> {
+    return await this.donorsRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} donor`;
+  async softDelete(id: number): Promise<void> {
+    await this.donorsRepository.softDelete(id);
   }
 }

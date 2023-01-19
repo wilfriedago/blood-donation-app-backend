@@ -1,27 +1,51 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { UpdateRewardDto } from './dto/update-reward.dto';
+import { Reward } from './entities/reward.entity';
 
 @Injectable()
 export class RewardsService {
-  create(createRewardDto: CreateRewardDto) {
-    return 'This action adds a new reward';
+  constructor(
+    @InjectRepository(Reward)
+    private readonly rewardsRepository: Repository<Reward>,
+  ) {}
+
+  async create(createProfileDto: CreateRewardDto): Promise<Reward> {
+    return await this.rewardsRepository.save(
+      this.rewardsRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all rewards`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<Reward[]> {
+    const { page, limit } = paginationOptions;
+    return await this.rewardsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reward`;
+  async findOne(fields: EntityCondition<Reward>): Promise<Reward> {
+    return await this.rewardsRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateRewardDto: UpdateRewardDto) {
-    return `This action updates a #${id} reward`;
+  async update(id: number, updateProfileDto: UpdateRewardDto): Promise<Reward> {
+    return await this.rewardsRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reward`;
+  async softDelete(id: number): Promise<void> {
+    await this.rewardsRepository.softDelete(id);
   }
 }

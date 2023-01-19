@@ -1,27 +1,54 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateHospitalDto } from './dto/create-hospital.dto';
 import { UpdateHospitalDto } from './dto/update-hospital.dto';
+import { Hospital } from './entities/hospital.entity';
 
 @Injectable()
 export class HospitalsService {
-  create(createHospitalDto: CreateHospitalDto) {
-    return 'This action adds a new hospital';
+  constructor(
+    @InjectRepository(Hospital)
+    private readonly hospitalsRepository: Repository<Hospital>,
+  ) {}
+
+  async create(createProfileDto: CreateHospitalDto): Promise<Hospital> {
+    return await this.hospitalsRepository.save(
+      this.hospitalsRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all hospitals`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<Hospital[]> {
+    const { page, limit } = paginationOptions;
+    return await this.hospitalsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hospital`;
+  async findOne(fields: EntityCondition<Hospital>): Promise<Hospital> {
+    return await this.hospitalsRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateHospitalDto: UpdateHospitalDto) {
-    return `This action updates a #${id} hospital`;
+  async update(
+    id: number,
+    updateProfileDto: UpdateHospitalDto,
+  ): Promise<Hospital> {
+    return await this.hospitalsRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} hospital`;
+  async softDelete(id: number): Promise<void> {
+    await this.hospitalsRepository.softDelete(id);
   }
 }

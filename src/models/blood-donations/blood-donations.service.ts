@@ -1,27 +1,58 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateBloodDonationDto } from './dto/create-blood-donation.dto';
 import { UpdateBloodDonationDto } from './dto/update-blood-donation.dto';
+import { BloodDonation } from './entities/blood-donation.entity';
 
 @Injectable()
 export class BloodDonationsService {
-  create(createBloodDonationDto: CreateBloodDonationDto) {
-    return 'This action adds a new bloodDonation';
+  constructor(
+    @InjectRepository(BloodDonation)
+    private readonly bloodDonationsRepository: Repository<BloodDonation>,
+  ) {}
+
+  async create(
+    createProfileDto: CreateBloodDonationDto,
+  ): Promise<BloodDonation> {
+    return await this.bloodDonationsRepository.save(
+      this.bloodDonationsRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all bloodDonations`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<BloodDonation[]> {
+    const { page, limit } = paginationOptions;
+    return await this.bloodDonationsRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bloodDonation`;
+  async findOne(
+    fields: EntityCondition<BloodDonation>,
+  ): Promise<BloodDonation> {
+    return await this.bloodDonationsRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateBloodDonationDto: UpdateBloodDonationDto) {
-    return `This action updates a #${id} bloodDonation`;
+  async update(
+    id: number,
+    updateProfileDto: UpdateBloodDonationDto,
+  ): Promise<BloodDonation> {
+    return await this.bloodDonationsRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bloodDonation`;
+  async softDelete(id: number): Promise<void> {
+    await this.bloodDonationsRepository.softDelete(id);
   }
 }

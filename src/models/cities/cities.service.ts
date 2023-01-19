@@ -1,27 +1,51 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { EntityCondition } from '@/utils/types/entity-condition.type';
+import { IPaginationOptions } from '@/utils/types/pagination-options';
 
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
+import { City } from './entities/city.entity';
 
 @Injectable()
 export class CitiesService {
-  create(createCityDto: CreateCityDto) {
-    return 'This action adds a new city';
+  constructor(
+    @InjectRepository(City)
+    private readonly citiesRepository: Repository<City>,
+  ) {}
+
+  async create(createProfileDto: CreateCityDto): Promise<City> {
+    return await this.citiesRepository.save(
+      this.citiesRepository.create(createProfileDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all cities`;
+  async findManyWithPagination(
+    paginationOptions: IPaginationOptions,
+  ): Promise<City[]> {
+    const { page, limit } = paginationOptions;
+    return await this.citiesRepository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} city`;
+  async findOne(fields: EntityCondition<City>): Promise<City> {
+    return await this.citiesRepository.findOne({
+      where: fields,
+    });
   }
 
-  update(id: number, updateCityDto: UpdateCityDto) {
-    return `This action updates a #${id} city`;
+  async update(id: number, updateProfileDto: UpdateCityDto): Promise<City> {
+    return await this.citiesRepository.save({
+      id,
+      ...updateProfileDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} city`;
+  async softDelete(id: number): Promise<void> {
+    await this.citiesRepository.softDelete(id);
   }
 }
