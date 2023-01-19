@@ -27,6 +27,16 @@ import { ForgotModule } from '@/forgot/forgot.module';
 import { HomeModule } from '@/home/home.module';
 import { MailModule } from '@/mail/mail.module';
 import { MailConfigService } from '@/mail/mail-config.service';
+import { AppointmentsModule } from '@/models/appointments/appointments.module';
+import { BloodBanksModule } from '@/models/blood-banks/blood-banks.module';
+import { BloodDonationsModule } from '@/models/blood-donations/blood-donations.module';
+import { BloodGroupsModule } from '@/models/blood-groups/blood-groups.module';
+import { BloodRequestsModule } from '@/models/blood-requests/blood-requests.module';
+import { CampaignsModule } from '@/models/campaigns/campaigns.module';
+import { CitiesModule } from '@/models/cities/cities.module';
+import { DonorsModule } from '@/models/donors/donors.module';
+import { HospitalsModule } from '@/models/hospitals/hospitals.module';
+import { RewardsModule } from '@/models/rewards/rewards.module';
 import { UsersModule } from '@/users/users.module';
 
 @Module({
@@ -83,6 +93,16 @@ import { UsersModule } from '@/users/users.module';
     ForgotModule,
     MailModule,
     HomeModule,
+    CitiesModule,
+    BloodBanksModule,
+    DonorsModule,
+    BloodRequestsModule,
+    RewardsModule,
+    BloodGroupsModule,
+    BloodDonationsModule,
+    HospitalsModule,
+    CampaignsModule,
+    AppointmentsModule,
   ],
 })
 export class AppModule {}
