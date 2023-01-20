@@ -1,4 +1,4 @@
-FROM node:16.19.0
+FROM node:16.19-bullseye-slim
 
 RUN yarn global add @nestjs/cli typescript ts-node
 
