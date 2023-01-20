@@ -55,6 +55,39 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Admin Login",
+							"id": "7c1ba318-d341-4084-a70f-4b8366f246d8",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"secret\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}{{api_version}}/auth/admin/email/login",
+									"host": [
+										"{{base_url}}{{api_version}}"
+									],
+									"path": [
+										"auth",
+										"admin",
+										"email",
+										"login"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"id": "de1cf68d-a7f8-4df1-9746-2facd4488882"
@@ -79,7 +112,128 @@
 		},
 		{
 			"name": "Users",
-			"item": [],
+			"item": [
+				{
+					"name": "Create a user",
+					"id": "a2b40906-a466-47dc-bc0c-697e1c7a6c05",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/users",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"id": "c5df1809-02b2-4a40-b7b5-c032208ac700",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/users?page=1&limit=2",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a user",
+					"id": "4c92882c-4b7d-4440-8efb-e17746bd5e22",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/users/1",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a user",
+					"id": "01de986c-8e3e-4451-b708-a525fe93b5ca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/users/1",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user",
+					"id": "ef695ee1-4d87-43dd-b096-08d4048469fe",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/users/1",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"id": "88e999b8-f9f3-4df8-a3b2-27c22428b56d"
 		},
 		{
@@ -99,7 +253,29 @@
 		},
 		{
 			"name": "Blood Groups",
-			"item": [],
+			"item": [
+				{
+					"name": "Get all Blood Groups",
+					"id": "a5562e1f-bcbf-4755-b3da-ae4a48d47edb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/blood-groups",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"blood-groups"
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"id": "b8028537-41e3-457a-b989-7319f2b1db25"
 		},
 		{
@@ -119,8 +295,149 @@
 		},
 		{
 			"name": "Donors",
-			"item": [],
-			"id": "acb2f41e-b74b-407b-bd4f-aa0cfd731356"
+			"item": [
+				{
+					"name": "Create a donor",
+					"id": "28506545-05c7-4f67-bd1a-85a9f5364527",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/donors",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"donors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all donors",
+					"id": "d884eadc-e5a9-4510-ab25-bfc2c2e45430",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/donors?page=1&limit=2",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"donors"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a donnor",
+					"id": "2196a2d5-6b99-4f89-a271-849c0e1f08df",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/donors/1",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"donors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a donor",
+					"id": "7fc058ae-63b9-43ac-a8a2-1522d8b96597",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/donors/1",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"donors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a donor",
+					"id": "5cebd652-8404-469f-b757-bed38dd37f24",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}{{api_version}}/donors/1",
+							"host": [
+								"{{base_url}}{{api_version}}"
+							],
+							"path": [
+								"donors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "acb2f41e-b74b-407b-bd4f-aa0cfd731356",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "de16e9ea-03c6-4c91-ae2b-24e879577c4b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "36d94f4d-ee72-4d97-931b-65b2a7dc4c16",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Hospitals",
@@ -134,13 +451,20 @@
 		}
 	],
 	"auth": {
-		"type": "bearer"
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6IkFkbWluIiwiX19lbnRpdHkiOiJSb2xlIn0sImlhdCI6MTY3NDIwODk2NiwiZXhwIjoxNjc0Mjk1MzY2fQ.tcYEob56ZAXo8igbZhoIcDfKvCRXn5e-UQRfWS8I13g",
+				"type": "string"
+			}
+		]
 	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "27615bcc-ff78-4a90-91f8-58b7ead3d9b8",
+				"id": "38d83f6d-a119-4999-a06b-6391e2750c3c",
 				"type": "text/javascript",
 				"exec": [
 					"pm.environment.get(\"bearerToken\");"
@@ -150,7 +474,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "7fb364a0-db25-4b04-88a6-5ccc88563614",
+				"id": "0ccc28d4-cdc8-4742-bbc0-e38719a9f1af",
 				"type": "text/javascript",
 				"exec": [
 					""

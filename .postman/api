@@ -13,3 +13,5 @@ files[] = {"id":"19559360-df5e2523-949f-4b7f-b5ee-1dbbe419500b","path":"Blood Do
 rootDirectory = postman/schemas
 
 [relations.apiDefinition.metaData]
+type = openapi:3
+rootFiles[] = index.json
