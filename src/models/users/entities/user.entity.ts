@@ -5,17 +5,18 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 import { AuthProvidersEnum } from '@/auth/auth-credentials/auth-providers.enum';
 import { FileEntity } from '@/files/entities/file.entity';
+import { BloodBank } from '@/models/blood-banks/entities/blood-bank.entity';
+import { Donor } from '@/models/donors/entities/donor.entity';
+import { Hospital } from '@/models/hospitals/entities/hospital.entity';
 import { Role } from '@/roles/entities/role.entity';
 import { Status } from '@/statuses/entities/status.entity';
 import { EntityHelper } from '@/utils/entity-helper';
@@ -59,14 +60,6 @@ export class User extends EntityHelper {
   @Expose({ groups: ['me', 'admin'] })
   socialId: string | null;
 
-  @Index()
-  @Column({ nullable: true })
-  firstName: string | null;
-
-  @Index()
-  @Column({ nullable: true })
-  lastName: string | null;
-
   @ManyToOne(() => FileEntity, {
     eager: true,
   })
@@ -87,12 +80,18 @@ export class User extends EntityHelper {
   @Exclude({ toPlainOnly: true })
   hash: string | null;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @OneToOne(() => Donor, (donor: Donor) => donor.user, {
+    onDelete: 'CASCADE',
+  })
+  donor: Donor;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToOne(() => Hospital, (hospital: Hospital) => hospital.user, {
+    onDelete: 'CASCADE',
+  })
+  hospital: Hospital;
 
-  @DeleteDateColumn()
-  deletedAt: Date;
+  @OneToOne(() => BloodBank, (bloodBank: BloodBank) => bloodBank.user, {
+    onDelete: 'CASCADE',
+  })
+  bloodBank: BloodBank;
 }
