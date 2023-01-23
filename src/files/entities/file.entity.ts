@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import appConfig from '@/config/app.config';
+import { appConfig } from '@/config';
 import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity({ name: 'file' })

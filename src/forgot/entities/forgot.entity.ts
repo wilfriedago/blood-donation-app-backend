@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { User } from '@/users/entities/user.entity';
+import { User } from '@/models/users/entities/user.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity()

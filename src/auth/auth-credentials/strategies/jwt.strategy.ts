@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { User } from '@/users/entities/user.entity';
+import { User } from '@/models/users/entities/user.entity';
 
 type JwtPayload = Pick<User, 'id' | 'role'> & { iat: number; exp: number };
 
