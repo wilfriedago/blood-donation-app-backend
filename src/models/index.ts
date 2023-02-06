@@ -7,5 +7,6 @@ export * from './campaigns/campaigns.module';
 export * from './cities/cities.module';
 export * from './donors/donors.module';
 export * from './hospitals/hospitals.module';
+export * from './questions/questions.module';
 export * from './rewards/rewards.module';
 export * from './users/users.module';
