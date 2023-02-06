@@ -24,17 +24,26 @@ export class HospitalsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<Hospital[]> {
+  ): Promise<[Hospital[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.hospitalsRepository.find({
+    return await this.hospitalsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 
   async findOne(fields: EntityCondition<Hospital>): Promise<Hospital> {
     return await this.hospitalsRepository.findOne({
       where: fields,
+    });
+  }
+
+  async findByUserId(userId: number): Promise<Hospital> {
+    return await this.hospitalsRepository.findOne({
+      where: {
+        user: { id: userId },
+      },
     });
   }
 

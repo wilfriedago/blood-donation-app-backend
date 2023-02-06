@@ -24,11 +24,12 @@ export class CampaignsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<Campaign[]> {
+  ): Promise<[Campaign[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.campaignsRepository.find({
+    return await this.campaignsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 

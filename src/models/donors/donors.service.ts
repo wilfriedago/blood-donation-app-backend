@@ -24,17 +24,26 @@ export class DonorsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<Donor[]> {
+  ): Promise<[Donor[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.donorsRepository.find({
+    return await this.donorsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 
   async findOne(fields: EntityCondition<Donor>): Promise<Donor> {
     return await this.donorsRepository.findOne({
       where: fields,
+    });
+  }
+
+  async findByUserId(userId: number): Promise<Donor> {
+    return await this.donorsRepository.findOne({
+      where: {
+        user: { id: userId },
+      },
     });
   }
 

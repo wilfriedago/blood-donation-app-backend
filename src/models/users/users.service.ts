@@ -24,11 +24,13 @@ export class UsersService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<User[]> {
+  ): Promise<[User[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.usersRepository.find({
+    return await this.usersRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
+      relations: ['donor', 'bloodBank', 'hospital'],
     });
   }
 

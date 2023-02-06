@@ -24,11 +24,12 @@ export class BloodGroupsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<BloodGroup[]> {
+  ): Promise<[BloodGroup[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.bloodGroupsRepository.find({
+    return await this.bloodGroupsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 

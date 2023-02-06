@@ -24,11 +24,12 @@ export class RewardsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<Reward[]> {
+  ): Promise<[Reward[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.rewardsRepository.find({
+    return await this.rewardsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 

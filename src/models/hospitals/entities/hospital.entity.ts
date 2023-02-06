@@ -1,17 +1,13 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 import { BloodRequest } from '@/models/blood-requests/entities/blood-request.entity';
-import { City } from '@/models/cities/entities/city.entity';
 import { User } from '@/models/users/entities/user.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
@@ -26,26 +22,13 @@ export class Hospital extends EntityHelper {
   @Column({ nullable: true })
   description?: string | null;
 
-  @Column({ nullable: true })
-  address?: string | null;
-
   @JoinColumn()
-  @OneToOne(() => User, (user) => user.donor, { onDelete: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.hospital, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
   user: User;
-
-  @JoinColumn()
-  @OneToOne(() => City, (city: City) => city.hospitals)
-  city: City;
 
   @OneToMany(() => BloodRequest, (bloodRequest) => bloodRequest.hospital)
   bloodRequests: BloodRequest[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

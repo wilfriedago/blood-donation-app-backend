@@ -26,11 +26,12 @@ export class BloodDonationsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<BloodDonation[]> {
+  ): Promise<[BloodDonation[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.bloodDonationsRepository.find({
+    return await this.bloodDonationsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 

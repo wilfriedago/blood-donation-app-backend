@@ -1,14 +1,11 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 import { BloodDonation } from '@/models/blood-donations/entities/blood-donation.entity';
@@ -28,9 +25,6 @@ export class Donor extends EntityHelper {
   @Index()
   @Column()
   lastName: string;
-
-  @Column({ nullable: true })
-  address?: string;
 
   @Column({ nullable: true })
   birthdate?: Date;
@@ -53,13 +47,4 @@ export class Donor extends EntityHelper {
 
   @OneToMany(() => BloodDonation, (bloodDonation) => bloodDonation.donor)
   bloodDonations: BloodDonation[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

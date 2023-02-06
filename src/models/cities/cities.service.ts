@@ -24,11 +24,12 @@ export class CitiesService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<City[]> {
+  ): Promise<[City[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.citiesRepository.find({
+    return await this.citiesRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 

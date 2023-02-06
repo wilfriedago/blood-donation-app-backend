@@ -5,16 +5,21 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { AuthProvidersEnum } from '@/auth/auth-credentials/auth-providers.enum';
 import { FileEntity } from '@/files/entities/file.entity';
 import { BloodBank } from '@/models/blood-banks/entities/blood-bank.entity';
+import { City } from '@/models/cities/entities/city.entity';
 import { Donor } from '@/models/donors/entities/donor.entity';
 import { Hospital } from '@/models/hospitals/entities/hospital.entity';
 import { Role } from '@/roles/entities/role.entity';
@@ -51,6 +56,12 @@ export class User extends EntityHelper {
     }
   }
 
+  @Column({ nullable: true })
+  address?: string;
+
+  @Column({ unique: true, nullable: true })
+  phone?: string;
+
   @Column({ default: AuthProvidersEnum.email })
   @Expose({ groups: ['me', 'admin'] })
   provider: string;
@@ -80,6 +91,12 @@ export class User extends EntityHelper {
   @Exclude({ toPlainOnly: true })
   hash: string | null;
 
+  @JoinColumn()
+  @ManyToOne(() => City, (city: City) => city.users, {
+    eager: true,
+  })
+  city: City;
+
   @OneToOne(() => Donor, (donor: Donor) => donor.user, {
     onDelete: 'CASCADE',
   })
@@ -94,4 +111,13 @@ export class User extends EntityHelper {
     onDelete: 'CASCADE',
   })
   bloodBank: BloodBank;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

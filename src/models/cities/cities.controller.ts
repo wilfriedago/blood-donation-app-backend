@@ -27,7 +27,6 @@ import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
 
 @ApiBearerAuth()
-@Roles(RoleEnum.admin)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Cities')
 @Controller({
@@ -38,8 +37,9 @@ export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
 
   @SerializeOptions({
-    groups: ['admin'],
+    groups: ['admin', 'superAdmin'],
   })
+  @Roles(RoleEnum.admin, RoleEnum.superAdmin)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createProfileDto: CreateCityDto) {
@@ -47,8 +47,15 @@ export class CitiesController {
   }
 
   @SerializeOptions({
-    groups: ['admin'],
+    groups: ['admin', 'donor', 'hospital', 'bloodBank', 'superAdmin'],
   })
+  @Roles(
+    RoleEnum.admin,
+    RoleEnum.donor,
+    RoleEnum.hospital,
+    RoleEnum.bloodBank,
+    RoleEnum.superAdmin,
+  )
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(
@@ -64,8 +71,9 @@ export class CitiesController {
   }
 
   @SerializeOptions({
-    groups: ['admin'],
+    groups: ['admin', 'superAdmin'],
   })
+  @Roles(RoleEnum.admin, RoleEnum.superAdmin)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id') id: string) {
@@ -73,8 +81,9 @@ export class CitiesController {
   }
 
   @SerializeOptions({
-    groups: ['admin'],
+    groups: ['admin', 'superAdmin'],
   })
+  @Roles(RoleEnum.admin, RoleEnum.superAdmin)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   async update(
@@ -85,8 +94,9 @@ export class CitiesController {
   }
 
   @SerializeOptions({
-    groups: ['admin'],
+    groups: ['admin', 'superAdmin'],
   })
+  @Roles(RoleEnum.admin, RoleEnum.superAdmin)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: number) {

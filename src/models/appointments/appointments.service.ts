@@ -24,11 +24,12 @@ export class AppointmentsService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<Appointment[]> {
+  ): Promise<[Appointment[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.appointmentsRepository.find({
+    return await this.appointmentsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 

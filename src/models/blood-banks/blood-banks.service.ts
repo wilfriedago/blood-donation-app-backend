@@ -24,17 +24,26 @@ export class BloodBanksService {
 
   async findManyWithPagination(
     paginationOptions: IPaginationOptions,
-  ): Promise<BloodBank[]> {
+  ): Promise<[BloodBank[], number]> {
     const { page, limit } = paginationOptions;
-    return await this.bloodBanksRepository.find({
+    return await this.bloodBanksRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      cache: true,
     });
   }
 
   async findOne(fields: EntityCondition<BloodBank>): Promise<BloodBank> {
     return await this.bloodBanksRepository.findOne({
       where: fields,
+    });
+  }
+
+  async findByUserId(userId: number): Promise<BloodBank> {
+    return await this.bloodBanksRepository.findOne({
+      where: {
+        user: { id: userId },
+      },
     });
   }
 

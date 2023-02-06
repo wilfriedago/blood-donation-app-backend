@@ -17,8 +17,11 @@ export class BloodGroup extends EntityHelper {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  name: string;
+
   @Column({ nullable: true })
-  description: string | null;
+  description?: string | null;
 
   @OneToMany(() => BloodDonation, (bloodDonation) => bloodDonation.bloodGroup)
   bloodDonations: BloodDonation[];

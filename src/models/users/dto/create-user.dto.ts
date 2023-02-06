@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 
 import { FileEntity } from '@/files/entities/file.entity';
+import { City } from '@/models/cities/entities/city.entity';
 import { Role } from '@/roles/entities/role.entity';
 import { Status } from '@/statuses/entities/status.entity';
 import { IsExist } from '@/utils/validators/is-exists.validator';
@@ -44,6 +45,12 @@ export class CreateUserDto {
     message: 'roleNotExists',
   })
   role?: Role | null;
+
+  @ApiProperty({ type: City })
+  @Validate(IsExist, ['City', 'id'], {
+    message: 'cityNotExists',
+  })
+  city?: City | null;
 
   @ApiProperty({ type: Status })
   @Validate(IsExist, ['Status', 'id'], {
