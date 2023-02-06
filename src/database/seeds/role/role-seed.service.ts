@@ -13,20 +13,47 @@ export class RoleSeedService {
   ) {}
 
   async run() {
-    const countUser = await this.repository.count({
+    const countDonor = await this.repository.count({
       where: {
-        id: RoleEnum.user,
+        id: RoleEnum.donor,
       },
     });
 
-    if (countUser === 0) {
+    if (countDonor === 0)
       await this.repository.save(
         this.repository.create({
-          id: RoleEnum.user,
-          name: 'User',
+          id: RoleEnum.donor,
+          name: 'Donor',
         }),
       );
-    }
+
+    const countHospital = await this.repository.count({
+      where: {
+        id: RoleEnum.hospital,
+      },
+    });
+
+    if (countHospital === 0)
+      await this.repository.save(
+        this.repository.create({
+          id: RoleEnum.hospital,
+          name: 'Hospital',
+        }),
+      );
+
+    const countBloodBank = await this.repository.count({
+      where: {
+        id: RoleEnum.bloodBank,
+      },
+    });
+
+    if (countBloodBank === 0)
+      await this.repository.save(
+        this.repository.create({
+          id: RoleEnum.bloodBank,
+          name: 'Blood Bank',
+        }),
+      );
 
     const countAdmin = await this.repository.count({
       where: {
@@ -34,13 +61,26 @@ export class RoleSeedService {
       },
     });
 
-    if (countAdmin === 0) {
+    if (countAdmin === 0)
       await this.repository.save(
         this.repository.create({
           id: RoleEnum.admin,
           name: 'Admin',
         }),
       );
-    }
+
+    const countSuperAdmin = await this.repository.count({
+      where: {
+        id: RoleEnum.superAdmin,
+      },
+    });
+
+    if (countSuperAdmin === 0)
+      await this.repository.save(
+        this.repository.create({
+          id: RoleEnum.superAdmin,
+          name: 'Super Admin',
+        }),
+      );
   }
 }
