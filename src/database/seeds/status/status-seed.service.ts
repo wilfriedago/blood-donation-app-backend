@@ -25,6 +25,30 @@ export class StatusSeedService {
           id: StatusEnum.inactive,
           name: 'Inactive',
         }),
+        this.repository.create({
+          id: StatusEnum.pending,
+          name: 'Pending',
+        }),
+        this.repository.create({
+          id: StatusEnum.incomplete,
+          name: 'Incomplete',
+        }),
+        this.repository.create({
+          id: StatusEnum.rejected,
+          name: 'Rejected',
+        }),
+        this.repository.create({
+          id: StatusEnum.verified,
+          name: 'Verified',
+        }),
+        this.repository.create({
+          id: StatusEnum.suspended,
+          name: 'Suspended',
+        }),
+        this.repository.create({
+          id: StatusEnum.blocked,
+          name: 'Blocked',
+        }),
       ]);
     }
   }
