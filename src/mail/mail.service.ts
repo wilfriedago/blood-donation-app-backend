@@ -18,15 +18,17 @@ export class MailService {
     await this.mailerService.sendMail({
       to: mailData.to,
       subject: await this.i18n.t('common.confirmEmail'),
-      text: `${this.configService.get('app.frontendDomain')}/confirm-email/${
-        mailData.data.hash
-      } ${await this.i18n.t('common.confirmEmail')}`,
+      text: `${this.configService.get(
+        'app.frontendDomain',
+      )}/auth/confirm-email/${mailData.data.hash} ${await this.i18n.t(
+        'common.confirmEmail',
+      )}`,
       template: 'activation',
       context: {
         title: await this.i18n.t('common.confirmEmail'),
-        url: `${this.configService.get('app.frontendDomain')}/confirm-email/${
-          mailData.data.hash
-        }`,
+        url: `${this.configService.get(
+          'app.frontendDomain',
+        )}/auth/confirm-email/${mailData.data.hash}`,
         actionTitle: await this.i18n.t('common.confirmEmail'),
         app_name: this.configService.get('app.name'),
         text1: await this.i18n.t('confirm-email.text1'),
@@ -40,15 +42,17 @@ export class MailService {
     await this.mailerService.sendMail({
       to: mailData.to,
       subject: await this.i18n.t('common.resetPassword'),
-      text: `${this.configService.get('app.frontendDomain')}/reset-password/${
-        mailData.data.hash
-      } ${await this.i18n.t('common.resetPassword')}`,
+      text: `${this.configService.get(
+        'app.frontendDomain',
+      )}/auth/reset-password/${mailData.data.hash} ${await this.i18n.t(
+        'common.resetPassword',
+      )}`,
       template: 'reset-password',
       context: {
         title: await this.i18n.t('common.resetPassword'),
-        url: `${this.configService.get('app.frontendDomain')}/reset-password/${
-          mailData.data.hash
-        }`,
+        url: `${this.configService.get(
+          'app.frontendDomain',
+        )}/auth/reset-password/${mailData.data.hash}`,
         actionTitle: await this.i18n.t('common.resetPassword'),
         app_name: this.configService.get('app.name'),
         text1: await this.i18n.t('reset-password.text1'),
