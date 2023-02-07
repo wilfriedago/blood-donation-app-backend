@@ -11,6 +11,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -22,6 +23,7 @@ import { BloodBank } from '@/models/blood-banks/entities/blood-bank.entity';
 import { City } from '@/models/cities/entities/city.entity';
 import { Donor } from '@/models/donors/entities/donor.entity';
 import { Hospital } from '@/models/hospitals/entities/hospital.entity';
+import { QuestionnaireResult } from '@/models/questionnaire-results/entities/questionnaire-result.entity';
 import { Role } from '@/roles/entities/role.entity';
 import { Status } from '@/statuses/entities/status.entity';
 import { EntityHelper } from '@/utils/entity-helper';
@@ -71,6 +73,11 @@ export class User extends EntityHelper {
   @Expose({ groups: ['me', 'admin'] })
   socialId: string | null;
 
+  @Column({ nullable: true })
+  @Index()
+  @Exclude({ toPlainOnly: true })
+  hash: string | null;
+
   @ManyToOne(() => FileEntity, {
     eager: true,
   })
@@ -86,16 +93,17 @@ export class User extends EntityHelper {
   })
   status?: Status;
 
-  @Column({ nullable: true })
-  @Index()
-  @Exclude({ toPlainOnly: true })
-  hash: string | null;
-
-  @JoinColumn()
   @ManyToOne(() => City, (city: City) => city.users, {
     eager: true,
   })
+  @JoinColumn()
   city: City;
+
+  @OneToMany(
+    () => QuestionnaireResult,
+    (questionnaireResult: QuestionnaireResult) => questionnaireResult.user,
+  )
+  questionnaireResults: QuestionnaireResult[];
 
   @OneToOne(() => Donor, (donor: Donor) => donor.user, {
     onDelete: 'CASCADE',
