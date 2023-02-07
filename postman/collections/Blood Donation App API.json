@@ -36,8 +36,8 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}{{api_version}}/email/login",
-                  "host": ["{{base_url}}{{api_version}}"],
+                  "raw": "{{baseUrl}}{{apiVersion}}/email/login",
+                  "host": ["{{baseUrl}}{{apiVersion}}"],
                   "path": ["email", "login"],
                   "query": [
                     {
@@ -70,8 +70,8 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}{{api_version}}/auth/admin/email/login",
-                  "host": ["{{base_url}}{{api_version}}"],
+                  "raw": "{{baseUrl}}{{apiVersion}}/auth/admin/email/login",
+                  "host": ["{{baseUrl}}{{apiVersion}}"],
                   "path": ["auth", "admin", "email", "login"]
                 }
               },
@@ -111,8 +111,8 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/users",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/users",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["users"]
             }
           },
@@ -128,8 +128,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/users?page=1&limit=2",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/users?page=1&limit=2",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["users"],
               "query": [
                 {
@@ -157,8 +157,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/users/1",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/users/1",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["users", "1"]
             }
           },
@@ -174,8 +174,8 @@
             "method": "PATCH",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/users/1",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/users/1",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["users", "1"]
             }
           },
@@ -191,8 +191,8 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/users/1",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/users/1",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["users", "1"]
             }
           },
@@ -229,8 +229,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/blood-groups",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/blood-groups",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["blood-groups"]
             }
           },
@@ -267,8 +267,8 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/donors",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/donors",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["donors"]
             }
           },
@@ -284,8 +284,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/donors?page=1&limit=2",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/donors?page=1&limit=2",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["donors"],
               "query": [
                 {
@@ -311,8 +311,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/donors/1",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/donors/1",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["donors", "1"]
             }
           },
@@ -328,8 +328,8 @@
             "method": "PATCH",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/donors/1",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/donors/1",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["donors", "1"]
             }
           },
@@ -345,8 +345,8 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}{{api_version}}/donors/1",
-              "host": ["{{base_url}}{{api_version}}"],
+              "raw": "{{baseUrl}}{{apiVersion}}/donors/1",
+              "host": ["{{baseUrl}}{{apiVersion}}"],
               "path": ["donors", "1"]
             }
           },
