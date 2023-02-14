@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-boilerplate",
+  "name": "heartofafrica-api",
   "version": "0.0.1",
   "description": "",
   "author": "Wilfried AGO <wilfriedago@pm.me>",
@@ -29,13 +29,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "env-cmd jest --config ./tests/jest-e2e.json",
-    "services:start": "docker compose -f docker-compose.yaml up -d postgres adminer maildev redis",
-    "services:postgres": "docker compose -f docker-compose.yaml up -d postgres",
-    "services:adminer": "docker compose -f docker-compose.yaml up -d adminer",
-    "services:maildev": "docker compose -f docker-compose.yaml up -d maildev",
-    "services:redis": "docker compose -f docker-compose.yaml up -d redis",
-    "services:stop": "docker compose -f docker-compose.yaml stop",
-    "services:down": "docker compose -f docker-compose.yaml down && docker volume prune -f"
+    "services:all": "docker compose -f docker-compose.dev.yaml up -d postgres adminer maildev redis",
+    "services:alpine": "docker compose -f docker-compose.dev.yaml up -d postgres maildev",
+    "services:postgres": "docker compose -f docker-compose.dev.yaml up -d postgres",
+    "services:adminer": "docker compose -f docker-compose.dev.yaml up -d adminer",
+    "services:maildev": "docker compose -f docker-compose.dev.yaml up -d maildev",
+    "services:redis": "docker compose -f docker-compose.dev.yaml up -d redis",
+    "services:stop": "docker compose -f docker-compose.dev.yaml stop",
+    "services:down": "docker compose -f docker-compose.dev.yaml down && docker volume prune -f"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "1.8.1",
@@ -73,6 +74,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-angular": "^17.4.2",
+    "@faker-js/faker": "^7.6.0",
     "@nestjs/cli": "^9.1.8",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "9.2.1",
