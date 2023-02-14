@@ -38,5 +38,95 @@ export class UserSeedService {
         }),
       );
     }
+
+    const countDonor = await this.repository.count({
+      where: {
+        role: {
+          id: RoleEnum.donor,
+        },
+      },
+    });
+
+    if (countDonor === 0) {
+      await this.repository.save(
+        this.repository.create({
+          email: 'wilfriedago@pm.me',
+          password: 'azerty1234',
+          role: {
+            id: RoleEnum.donor,
+            name: 'Donor',
+          },
+          status: {
+            id: StatusEnum.incomplete,
+            name: 'Incomplete',
+          },
+        }),
+      );
+    }
+
+    const countHospital = await this.repository.count({
+      where: {
+        role: {
+          id: RoleEnum.hospital,
+        },
+      },
+    });
+
+    if (countHospital === 0) {
+      await this.repository.save(
+        this.repository.create({
+          email: 'cliniquelagrace@gmail.com',
+          password: 'azerty1234',
+          role: {
+            id: RoleEnum.hospital,
+            name: 'Hospital',
+          },
+          status: {
+            id: StatusEnum.incomplete,
+            name: 'Incomplete',
+          },
+        }),
+      );
+    }
+
+    const countBloodBank = await this.repository.count({
+      where: {
+        role: {
+          id: RoleEnum.bloodBank,
+        },
+      },
+    });
+
+    if (countBloodBank === 0) {
+      await this.repository.save(
+        this.repository.create({
+          email: 'bloodbank1@gmail.com',
+          password: 'azerty1234',
+          role: {
+            id: RoleEnum.bloodBank,
+            name: 'Blood Bank',
+          },
+          status: {
+            id: StatusEnum.incomplete,
+            name: 'Incomplete',
+          },
+        }),
+      );
+
+      await this.repository.save(
+        this.repository.create({
+          email: 'bloodbank2@gmail.com',
+          password: 'azerty1234',
+          role: {
+            id: RoleEnum.bloodBank,
+            name: 'Blood Bank',
+          },
+          status: {
+            id: StatusEnum.incomplete,
+            name: 'Incomplete',
+          },
+        }),
+      );
+    }
   }
 }

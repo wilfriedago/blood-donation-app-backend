@@ -1,45 +1,64 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { BloodDonation } from '@/models/blood-donations/entities/blood-donation.entity';
 import { BloodGroup } from '@/models/blood-groups/entities/blood-group.entity';
+import { BloodRequestStatus } from '@/models/blood-request-statuses/entities/blood-request-status.entity';
+import { BloodSupply } from '@/models/blood-supplies/entities/blood-supply.entity';
 import { Hospital } from '@/models/hospitals/entities/hospital.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity()
 export class BloodRequest extends EntityHelper {
+  @ApiProperty({ example: 1 })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ example: 'Blood Request 1' })
   @Column()
   name: string;
 
+  @ApiProperty({ example: 'Blood Request 1 Description' })
   @Column({ nullable: true })
   description?: string | null;
 
+  @ApiProperty({ example: 10 })
   @Column({ type: 'float' })
-  amount: number;
+  quantityRequested: number;
 
+  @OneToMany(() => BloodSupply, (bloodSupply) => bloodSupply.bloodRequest)
+  bloodSupplies: BloodSupply[];
+
+  @ManyToOne(() => BloodGroup, (bloodGroup) => bloodGroup.bloodRequests, {
+    eager: true,
+  })
   @JoinColumn()
-  @OneToOne(() => BloodGroup, (bloodGroup) => bloodGroup.bloodRequests)
   bloodGroup: BloodGroup;
 
+  @ManyToOne(() => Hospital, (hospital) => hospital.bloodRequests, {
+    eager: true,
+  })
   @JoinColumn()
-  @OneToOne(() => Hospital, (hospital) => hospital.bloodRequests)
   hospital: Hospital;
 
+  @ManyToOne(
+    () => BloodRequestStatus,
+    (bloodRequestStatus) => bloodRequestStatus.bloodRequests,
+    {
+      eager: true,
+    },
+  )
   @JoinColumn()
-  @OneToMany(() => BloodDonation, (bloodDonation) => bloodDonation.bloodRequest)
-  bloodDonations: BloodDonation[];
+  bloodRequestStatus: BloodRequestStatus;
 
   @CreateDateColumn()
   createdAt: Date;

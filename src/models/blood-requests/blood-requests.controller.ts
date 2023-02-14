@@ -27,7 +27,7 @@ import { CreateBloodRequestDto } from './dto/create-blood-request.dto';
 import { UpdateBloodRequestDto } from './dto/update-blood-request.dto';
 
 @ApiBearerAuth()
-@Roles(RoleEnum.admin)
+@Roles(RoleEnum.admin, RoleEnum.hospital)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('BloodRequests')
 @Controller({

@@ -1,0 +1,120 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class LastUpdatedMigrations1676371515832 implements MigrationInterface {
+    name = 'LastUpdatedMigrations1676371515832'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`CREATE TABLE "file" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "path" character varying NOT NULL, CONSTRAINT "PK_36b46d232307066b3a2c9ea3a1d" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "affiliate" ("id" SERIAL NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" integer, CONSTRAINT "REL_7ea0af8c910211e1b7ed0406d1" UNIQUE ("userId"), CONSTRAINT "PK_1ce9ae335b25b11224e2756cfdc" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "blood_bank" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "userId" integer, CONSTRAINT "REL_9347ac690d1080ea3af18aeeb2" UNIQUE ("userId"), CONSTRAINT "PK_86d7075aef896bc08dc2eb9bf88" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "country" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "PK_bf6e37c231c4f4ea56dcd887269" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "city" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "countryId" integer, CONSTRAINT "PK_b222f51ce26f7e5ca86944a6739" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "blood_donation" ("id" SERIAL NOT NULL, "quantityDonated" double precision NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "donorId" integer, CONSTRAINT "PK_53916e80e4a1f8e42be6a431b32" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "blood_request_status" ("id" integer NOT NULL, "value" character varying NOT NULL, CONSTRAINT "PK_12768d22e73c2db90fb06d43331" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "hospital" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "userId" integer, CONSTRAINT "REL_eb274d2148ca2050fbf511e002" UNIQUE ("userId"), CONSTRAINT "PK_10f19e0bf17ded693ea0da07d95" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "blood_supply" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "quantitySupplied" double precision NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "bloodRequestId" integer, "hospitalId" integer, CONSTRAINT "PK_a12c6eac9d6a6f6e8fe32c0ff77" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "blood_request" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "quantityRequested" double precision NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "bloodGroupId" integer, "hospitalId" integer, "bloodRequestStatusId" integer, CONSTRAINT "PK_dde563c617bd6830f54952d61d1" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "blood_group" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, CONSTRAINT "UQ_1ab6443f03ce64b77a4b4ceadf8" UNIQUE ("name"), CONSTRAINT "PK_fa094842991eebde592423b5569" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "donor_card" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "donorId" integer, CONSTRAINT "REL_dec9779a3c14b7a928266fc714" UNIQUE ("donorId"), CONSTRAINT "PK_ebeab15d79de4c5d5bead1e264a" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "donor" ("id" SERIAL NOT NULL, "firstName" character varying NOT NULL, "lastName" character varying NOT NULL, "birthdate" TIMESTAMP, "gender" character varying, "weight" double precision, "userId" integer, "bloodGroupId" integer, CONSTRAINT "REL_1066cb3fd61d250765bba26acc" UNIQUE ("userId"), CONSTRAINT "PK_51f7b00d1120f7130b69f8a3a46" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_6248e6878ca586e382ea05d293" ON "donor" ("firstName") `);
+        await queryRunner.query(`CREATE INDEX "IDX_cb1b5deee0a276eceb7c814a67" ON "donor" ("lastName") `);
+        await queryRunner.query(`CREATE TABLE "answer" ("id" SERIAL NOT NULL, "value" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "PK_9232db17b63fb1e94f97e5c224f" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "questionnaire" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "PK_e8232a11eaabac903636eb7e71e" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "question" ("id" SERIAL NOT NULL, "value" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "questionnaireId" integer, CONSTRAINT "PK_21e5786aa0ea704ae185a79b2d5" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "question_answer" ("id" SERIAL NOT NULL, "score" integer NOT NULL, "justification" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "questionId" integer, "answerId" integer, "userId" integer, CONSTRAINT "PK_c1e064f8949efd78ad3c66059ba" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "role" ("id" integer NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_b36bcfe02fc8de3c57a8b2391c2" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "status" ("id" integer NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_e12743a7086ec826733f54e1d95" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "user" ("id" SERIAL NOT NULL, "email" character varying, "password" character varying, "address" character varying, "phone" character varying, "provider" character varying NOT NULL DEFAULT 'email', "socialId" character varying, "hash" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "photoId" uuid, "roleId" integer, "statusId" integer, "cityId" integer, CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "UQ_8e1f623798118e629b46a9e6299" UNIQUE ("phone"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_9bd2fe7a8e694dedc4ec2f666f" ON "user" ("socialId") `);
+        await queryRunner.query(`CREATE INDEX "IDX_e282acb94d2e3aec10f480e4f6" ON "user" ("hash") `);
+        await queryRunner.query(`CREATE TABLE "forgot" ("id" SERIAL NOT NULL, "hash" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" integer, CONSTRAINT "PK_087959f5bb89da4ce3d763eab75" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_df507d27b0fb20cd5f7bef9b9a" ON "forgot" ("hash") `);
+        await queryRunner.query(`CREATE TABLE "administrator" ("id" SERIAL NOT NULL, "firstName" character varying NOT NULL, "lastName" character varying NOT NULL, "birthdate" TIMESTAMP, "gender" character varying, "userId" integer, CONSTRAINT "REL_1966e18ce6a39a82b19204704d" UNIQUE ("userId"), CONSTRAINT "PK_ee58e71b3b4008b20ddc7b3092b" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_547a07f91deb4d8f5d3dae49d0" ON "administrator" ("firstName") `);
+        await queryRunner.query(`CREATE INDEX "IDX_07f6e129afaaba6ab78071e400" ON "administrator" ("lastName") `);
+        await queryRunner.query(`CREATE TABLE "affiliate_link" ("id" SERIAL NOT NULL, "hash" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "PK_4d8e59b42a53f7718de5c0a8002" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_5fd412fc32cfed1684501fdc65" ON "affiliate_link" ("hash") `);
+        await queryRunner.query(`ALTER TABLE "affiliate" ADD CONSTRAINT "FK_7ea0af8c910211e1b7ed0406d15" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_bank" ADD CONSTRAINT "FK_9347ac690d1080ea3af18aeeb24" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "city" ADD CONSTRAINT "FK_990b8a57ab901cb812e2b52fcf0" FOREIGN KEY ("countryId") REFERENCES "country"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_donation" ADD CONSTRAINT "FK_f69351f623b410ad02cc416ea02" FOREIGN KEY ("donorId") REFERENCES "donor"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "hospital" ADD CONSTRAINT "FK_eb274d2148ca2050fbf511e002c" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_supply" ADD CONSTRAINT "FK_84955d93035f5863f3f63c1dd45" FOREIGN KEY ("bloodRequestId") REFERENCES "blood_request"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_supply" ADD CONSTRAINT "FK_7a811532d47e55b7c4fe079bce3" FOREIGN KEY ("hospitalId") REFERENCES "hospital"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_request" ADD CONSTRAINT "FK_152fced81a5a58198facd59928b" FOREIGN KEY ("bloodGroupId") REFERENCES "blood_group"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_request" ADD CONSTRAINT "FK_9bfd11c4f7a72c9486e72d83141" FOREIGN KEY ("hospitalId") REFERENCES "hospital"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "blood_request" ADD CONSTRAINT "FK_06fb0116413aa75fe25c81da9a6" FOREIGN KEY ("bloodRequestStatusId") REFERENCES "blood_request_status"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "donor_card" ADD CONSTRAINT "FK_dec9779a3c14b7a928266fc7145" FOREIGN KEY ("donorId") REFERENCES "donor"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "donor" ADD CONSTRAINT "FK_1066cb3fd61d250765bba26accb" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "donor" ADD CONSTRAINT "FK_61ff1e16cf0bdd324e43035d4d7" FOREIGN KEY ("bloodGroupId") REFERENCES "blood_group"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "question" ADD CONSTRAINT "FK_3f7828c3b2c8db7b5e41cade66a" FOREIGN KEY ("questionnaireId") REFERENCES "questionnaire"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "question_answer" ADD CONSTRAINT "FK_1adf9ebd234bfde6fb88f0da94e" FOREIGN KEY ("questionId") REFERENCES "question"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "question_answer" ADD CONSTRAINT "FK_934582d22dc8433bccaf5b71ed3" FOREIGN KEY ("answerId") REFERENCES "answer"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "question_answer" ADD CONSTRAINT "FK_608dc7e300d17b5b28b390173f3" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_75e2be4ce11d447ef43be0e374f" FOREIGN KEY ("photoId") REFERENCES "file"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_c28e52f758e7bbc53828db92194" FOREIGN KEY ("roleId") REFERENCES "role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_dc18daa696860586ba4667a9d31" FOREIGN KEY ("statusId") REFERENCES "status"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_beb5846554bec348f6baf449e83" FOREIGN KEY ("cityId") REFERENCES "city"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "forgot" ADD CONSTRAINT "FK_31f3c80de0525250f31e23a9b83" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "administrator" ADD CONSTRAINT "FK_1966e18ce6a39a82b19204704d7" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "administrator" DROP CONSTRAINT "FK_1966e18ce6a39a82b19204704d7"`);
+        await queryRunner.query(`ALTER TABLE "forgot" DROP CONSTRAINT "FK_31f3c80de0525250f31e23a9b83"`);
+        await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_beb5846554bec348f6baf449e83"`);
+        await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_dc18daa696860586ba4667a9d31"`);
+        await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_c28e52f758e7bbc53828db92194"`);
+        await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_75e2be4ce11d447ef43be0e374f"`);
+        await queryRunner.query(`ALTER TABLE "question_answer" DROP CONSTRAINT "FK_608dc7e300d17b5b28b390173f3"`);
+        await queryRunner.query(`ALTER TABLE "question_answer" DROP CONSTRAINT "FK_934582d22dc8433bccaf5b71ed3"`);
+        await queryRunner.query(`ALTER TABLE "question_answer" DROP CONSTRAINT "FK_1adf9ebd234bfde6fb88f0da94e"`);
+        await queryRunner.query(`ALTER TABLE "question" DROP CONSTRAINT "FK_3f7828c3b2c8db7b5e41cade66a"`);
+        await queryRunner.query(`ALTER TABLE "donor" DROP CONSTRAINT "FK_61ff1e16cf0bdd324e43035d4d7"`);
+        await queryRunner.query(`ALTER TABLE "donor" DROP CONSTRAINT "FK_1066cb3fd61d250765bba26accb"`);
+        await queryRunner.query(`ALTER TABLE "donor_card" DROP CONSTRAINT "FK_dec9779a3c14b7a928266fc7145"`);
+        await queryRunner.query(`ALTER TABLE "blood_request" DROP CONSTRAINT "FK_06fb0116413aa75fe25c81da9a6"`);
+        await queryRunner.query(`ALTER TABLE "blood_request" DROP CONSTRAINT "FK_9bfd11c4f7a72c9486e72d83141"`);
+        await queryRunner.query(`ALTER TABLE "blood_request" DROP CONSTRAINT "FK_152fced81a5a58198facd59928b"`);
+        await queryRunner.query(`ALTER TABLE "blood_supply" DROP CONSTRAINT "FK_7a811532d47e55b7c4fe079bce3"`);
+        await queryRunner.query(`ALTER TABLE "blood_supply" DROP CONSTRAINT "FK_84955d93035f5863f3f63c1dd45"`);
+        await queryRunner.query(`ALTER TABLE "hospital" DROP CONSTRAINT "FK_eb274d2148ca2050fbf511e002c"`);
+        await queryRunner.query(`ALTER TABLE "blood_donation" DROP CONSTRAINT "FK_f69351f623b410ad02cc416ea02"`);
+        await queryRunner.query(`ALTER TABLE "city" DROP CONSTRAINT "FK_990b8a57ab901cb812e2b52fcf0"`);
+        await queryRunner.query(`ALTER TABLE "blood_bank" DROP CONSTRAINT "FK_9347ac690d1080ea3af18aeeb24"`);
+        await queryRunner.query(`ALTER TABLE "affiliate" DROP CONSTRAINT "FK_7ea0af8c910211e1b7ed0406d15"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_5fd412fc32cfed1684501fdc65"`);
+        await queryRunner.query(`DROP TABLE "affiliate_link"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_07f6e129afaaba6ab78071e400"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_547a07f91deb4d8f5d3dae49d0"`);
+        await queryRunner.query(`DROP TABLE "administrator"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_df507d27b0fb20cd5f7bef9b9a"`);
+        await queryRunner.query(`DROP TABLE "forgot"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_e282acb94d2e3aec10f480e4f6"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_9bd2fe7a8e694dedc4ec2f666f"`);
+        await queryRunner.query(`DROP TABLE "user"`);
+        await queryRunner.query(`DROP TABLE "status"`);
+        await queryRunner.query(`DROP TABLE "role"`);
+        await queryRunner.query(`DROP TABLE "question_answer"`);
+        await queryRunner.query(`DROP TABLE "question"`);
+        await queryRunner.query(`DROP TABLE "questionnaire"`);
+        await queryRunner.query(`DROP TABLE "answer"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_cb1b5deee0a276eceb7c814a67"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_6248e6878ca586e382ea05d293"`);
+        await queryRunner.query(`DROP TABLE "donor"`);
+        await queryRunner.query(`DROP TABLE "donor_card"`);
+        await queryRunner.query(`DROP TABLE "blood_group"`);
+        await queryRunner.query(`DROP TABLE "blood_request"`);
+        await queryRunner.query(`DROP TABLE "blood_supply"`);
+        await queryRunner.query(`DROP TABLE "hospital"`);
+        await queryRunner.query(`DROP TABLE "blood_request_status"`);
+        await queryRunner.query(`DROP TABLE "blood_donation"`);
+        await queryRunner.query(`DROP TABLE "city"`);
+        await queryRunner.query(`DROP TABLE "country"`);
+        await queryRunner.query(`DROP TABLE "blood_bank"`);
+        await queryRunner.query(`DROP TABLE "affiliate"`);
+        await queryRunner.query(`DROP TABLE "file"`);
+    }
+
+}

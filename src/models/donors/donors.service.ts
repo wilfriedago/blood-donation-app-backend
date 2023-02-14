@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { User } from '@/models/users/entities/user.entity';
 import { EntityCondition } from '@/utils/types/entity-condition.type';
 import { IPaginationOptions } from '@/utils/types/pagination-options';
 
@@ -14,6 +15,8 @@ export class DonorsService {
   constructor(
     @InjectRepository(Donor)
     private readonly donorsRepository: Repository<Donor>,
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
   ) {}
 
   async create(createProfileDto: CreateDonorDto): Promise<Donor> {
@@ -34,17 +37,21 @@ export class DonorsService {
   }
 
   async findOne(fields: EntityCondition<Donor>): Promise<Donor> {
-    return await this.donorsRepository.findOne({
+    const donor = await this.donorsRepository.findOne({
       where: fields,
     });
-  }
 
-  async findByUserId(userId: number): Promise<Donor> {
-    return await this.donorsRepository.findOne({
-      where: {
-        user: { id: userId },
-      },
-    });
+    if (donor) return donor;
+    else
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          errors: {
+            user: 'userNotFound',
+          },
+        },
+        HttpStatus.NOT_FOUND,
+      );
   }
 
   async update(id: number, updateProfileDto: UpdateDonorDto): Promise<Donor> {

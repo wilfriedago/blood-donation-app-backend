@@ -39,14 +39,6 @@ export class BloodBanksService {
     });
   }
 
-  async findByUserId(userId: number): Promise<BloodBank> {
-    return await this.bloodBanksRepository.findOne({
-      where: {
-        user: { id: userId },
-      },
-    });
-  }
-
   async update(
     id: number,
     updateProfileDto: UpdateBloodBankDto,

@@ -1,23 +1,37 @@
 import { NestFactory } from '@nestjs/core';
 
-import { BloodGroupSeedService } from './blood-group/blood-group-seed.service';
-import { CitySeedService } from './city/city-seed.service';
-import { QuestionSeedService } from './question/question-seed.service';
-import { RoleSeedService } from './role/role-seed.service';
+import {
+  AnswerSeedService,
+  BloodBankSeedService,
+  BloodGroupSeedService,
+  CitySeedService,
+  CountrySeedService,
+  DonorSeedService,
+  HospitalSeedService,
+  QuestionnaireSeedService,
+  QuestionSeedService,
+  RoleSeedService,
+  StatusSeedService,
+  UserSeedService,
+} from '@/database/seeds';
+
 import { SeedModule } from './seed.module';
-import { StatusSeedService } from './status/status-seed.service';
-import { UserSeedService } from './user/user-seed.service';
 
 const runSeed = async () => {
   const app = await NestFactory.create(SeedModule);
 
-  // run
   await app.get(RoleSeedService).run();
   await app.get(StatusSeedService).run();
-  await app.get(UserSeedService).run();
-  await app.get(CitySeedService).run();
   await app.get(BloodGroupSeedService).run();
+  await app.get(UserSeedService).run();
+  await app.get(DonorSeedService).run();
+  await app.get(HospitalSeedService).run();
+  await app.get(BloodBankSeedService).run();
+  await app.get(CountrySeedService).run();
+  await app.get(CitySeedService).run();
+  await app.get(QuestionnaireSeedService).run();
   await app.get(QuestionSeedService).run();
+  await app.get(AnswerSeedService).run();
 
   await app.close();
 };

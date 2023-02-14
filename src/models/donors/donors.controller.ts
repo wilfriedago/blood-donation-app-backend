@@ -17,10 +17,9 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+import { Roles } from '@/roles/roles.decorator';
+import { RoleEnum } from '@/roles/roles.enum';
 import { RolesGuard } from '@/roles/roles.guard';
-// import { Roles } from '@/roles/roles.decorator';
-// import { RoleEnum } from '@/roles/roles.enum';
-// import { RolesGuard } from '@/roles/roles.guard';
 import { infinityPagination } from '@/utils/infinity-pagination';
 
 import { DonorsService } from './donors.service';
@@ -28,7 +27,7 @@ import { CreateDonorDto } from './dto/create-donor.dto';
 import { UpdateDonorDto } from './dto/update-donor.dto';
 
 @ApiBearerAuth()
-//@Roles(RoleEnum.admin)
+@Roles(RoleEnum.admin)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Donors')
 @Controller({

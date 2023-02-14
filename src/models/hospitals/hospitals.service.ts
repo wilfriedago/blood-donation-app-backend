@@ -39,14 +39,6 @@ export class HospitalsService {
     });
   }
 
-  async findByUserId(userId: number): Promise<Hospital> {
-    return await this.hospitalsRepository.findOne({
-      where: {
-        user: { id: userId },
-      },
-    });
-  }
-
   async update(
     id: number,
     updateProfileDto: UpdateHospitalDto,

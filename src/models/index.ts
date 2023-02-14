@@ -1,3 +1,5 @@
+export * from './administrators/administrators.module';
+export * from './answers/answers.module';
 export * from './appointments/appointments.module';
 export * from './blood-banks/blood-banks.module';
 export * from './blood-donations/blood-donations.module';
@@ -5,8 +7,11 @@ export * from './blood-groups/blood-groups.module';
 export * from './blood-requests/blood-requests.module';
 export * from './campaigns/campaigns.module';
 export * from './cities/cities.module';
+export * from './countries/countries.module';
 export * from './donors/donors.module';
 export * from './hospitals/hospitals.module';
+export * from './question-answers/question-answers.module';
+export * from './questionnaires/questionnaires.module';
 export * from './questions/questions.module';
 export * from './rewards/rewards.module';
 export * from './users/users.module';

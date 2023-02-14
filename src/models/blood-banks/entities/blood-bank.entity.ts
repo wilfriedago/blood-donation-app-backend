@@ -20,10 +20,9 @@ export class BloodBank extends EntityHelper {
   @Column({ nullable: true })
   description?: string | null;
 
-  @JoinColumn()
   @OneToOne(() => User, (user) => user.bloodBank, {
     onDelete: 'CASCADE',
-    eager: true,
   })
+  @JoinColumn()
   user: User;
 }

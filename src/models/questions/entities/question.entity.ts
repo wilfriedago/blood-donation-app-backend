@@ -1,14 +1,17 @@
 import {
-  AfterInsert,
-  AfterRemove,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { QuestionAnswer } from '@/models/question-answers/entities/question-answer.entity';
+import { Questionnaire } from '@/models/questionnaires/entities/questionnaire.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity()
@@ -17,39 +20,17 @@ export class Question extends EntityHelper {
   id: number;
 
   @Column()
-  text: string;
-
-  @Column()
-  type: string;
-
-  @Column()
-  order: number;
+  value: string;
 
   @Column({ nullable: true })
   description?: string | null;
 
-  @Column({ nullable: true })
-  options?: string | null;
+  @ManyToOne(() => Questionnaire, (questionnaire) => questionnaire.questions)
+  @JoinColumn()
+  questionnaire: Questionnaire;
 
-  @Column({ nullable: true })
-  answer?: string | null;
-
-  @Column({ nullable: true })
-  is_active?: boolean | null;
-
-  @AfterInsert()
-  setActive() {
-    this.is_active = true;
-  }
-
-  @Column({ nullable: true })
-  is_deleted?: boolean | null;
-
-  @AfterRemove()
-  setDeleted() {
-    this.is_active = false;
-    this.is_deleted = true;
-  }
+  @OneToMany(() => QuestionAnswer, (questionAnswer) => questionAnswer.question)
+  questionAnswers: QuestionAnswer[];
 
   @CreateDateColumn()
   createdAt: Date;

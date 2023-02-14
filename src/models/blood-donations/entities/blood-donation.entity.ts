@@ -1,37 +1,33 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToOne,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { BloodGroup } from '@/models/blood-groups/entities/blood-group.entity';
-import { BloodRequest } from '@/models/blood-requests/entities/blood-request.entity';
 import { Donor } from '@/models/donors/entities/donor.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
 @Entity()
 export class BloodDonation extends EntityHelper {
+  @ApiProperty({ example: 1 })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ example: 10 })
   @Column({ type: 'float' })
-  amount: number;
+  quantityDonated: number;
 
-  @Column()
-  date: Date;
-
-  @OneToOne(() => Donor, (donor) => donor.bloodDonations)
+  @ManyToOne(() => Donor, (donor) => donor.bloodDonations, {
+    eager: true,
+  })
+  @JoinColumn()
   donor: Donor;
-
-  @OneToOne(() => BloodGroup, (bloodGroup) => bloodGroup.bloodDonations)
-  bloodGroup: BloodGroup;
-
-  @OneToOne(() => BloodRequest, (bloodRequest) => bloodRequest.bloodDonations)
-  bloodRequest: BloodRequest;
 
   @CreateDateColumn()
   createdAt: Date;

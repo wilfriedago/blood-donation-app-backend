@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { BloodRequest } from '@/models/blood-requests/entities/blood-request.entity';
+import { BloodSupply } from '@/models/blood-supplies/entities/blood-supply.entity';
 import { User } from '@/models/users/entities/user.entity';
 import { EntityHelper } from '@/utils/entity-helper';
 
@@ -22,13 +23,15 @@ export class Hospital extends EntityHelper {
   @Column({ nullable: true })
   description?: string | null;
 
-  @JoinColumn()
   @OneToOne(() => User, (user) => user.hospital, {
     onDelete: 'CASCADE',
-    eager: true,
   })
+  @JoinColumn()
   user: User;
 
   @OneToMany(() => BloodRequest, (bloodRequest) => bloodRequest.hospital)
   bloodRequests: BloodRequest[];
+
+  @OneToMany(() => BloodSupply, (bloodSupply) => bloodSupply.hospital)
+  bloodSupplies: BloodSupply[];
 }

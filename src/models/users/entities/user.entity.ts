@@ -19,11 +19,12 @@ import {
 
 import { AuthProvidersEnum } from '@/auth/auth-credentials/auth-providers.enum';
 import { FileEntity } from '@/files/entities/file.entity';
+import { Affiliate } from '@/models/affiliates/entities/affiliate.entity';
 import { BloodBank } from '@/models/blood-banks/entities/blood-bank.entity';
 import { City } from '@/models/cities/entities/city.entity';
 import { Donor } from '@/models/donors/entities/donor.entity';
 import { Hospital } from '@/models/hospitals/entities/hospital.entity';
-import { QuestionnaireResult } from '@/models/questionnaire-results/entities/questionnaire-result.entity';
+import { QuestionAnswer } from '@/models/question-answers/entities/question-answer.entity';
 import { Role } from '@/roles/entities/role.entity';
 import { Status } from '@/statuses/entities/status.entity';
 import { EntityHelper } from '@/utils/entity-helper';
@@ -100,25 +101,34 @@ export class User extends EntityHelper {
   city: City;
 
   @OneToMany(
-    () => QuestionnaireResult,
-    (questionnaireResult: QuestionnaireResult) => questionnaireResult.user,
+    () => QuestionAnswer,
+    (questionAnswer: QuestionAnswer) => questionAnswer.user,
   )
-  questionnaireResults: QuestionnaireResult[];
+  questionAnswers: QuestionAnswer[];
 
   @OneToOne(() => Donor, (donor: Donor) => donor.user, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   donor: Donor;
 
   @OneToOne(() => Hospital, (hospital: Hospital) => hospital.user, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   hospital: Hospital;
 
   @OneToOne(() => BloodBank, (bloodBank: BloodBank) => bloodBank.user, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   bloodBank: BloodBank;
+
+  @OneToOne(() => Affiliate, (affiliate: Affiliate) => affiliate.user, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  affiliate: Affiliate;
 
   @CreateDateColumn()
   createdAt: Date;

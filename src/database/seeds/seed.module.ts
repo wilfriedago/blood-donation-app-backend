@@ -4,14 +4,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 import { appConfig, databaseConfig } from '@/config';
+import {
+  AnswerSeedModule,
+  BloodBankSeedModule,
+  BloodGroupSeedModule,
+  CitySeedModule,
+  CountrySeedModule,
+  DonorSeedModule,
+  HospitalSeedModule,
+  QuestionnaireSeedModule,
+  QuestionSeedModule,
+  RoleSeedModule,
+  StatusSeedModule,
+  UserSeedModule,
+} from '@/database/seeds';
 import { TypeOrmConfigService } from '@/database/typeorm-config.service';
-
-import { BloodGroupSeedModule } from './blood-group/blood-group-seed.module';
-import { CitySeedModule } from './city/city-seed.module';
-import { QuestionSeedModule } from './question/question-seed.module';
-import { RoleSeedModule } from './role/role-seed.module';
-import { StatusSeedModule } from './status/status-seed.module';
-import { UserSeedModule } from './user/user-seed.module';
 
 @Module({
   imports: [
@@ -27,12 +34,18 @@ import { UserSeedModule } from './user/user-seed.module';
         return dataSource;
       },
     }),
+    AnswerSeedModule,
+    BloodBankSeedModule,
+    BloodGroupSeedModule,
+    CitySeedModule,
+    CountrySeedModule,
+    DonorSeedModule,
+    HospitalSeedModule,
+    QuestionnaireSeedModule,
+    QuestionSeedModule,
     RoleSeedModule,
     StatusSeedModule,
     UserSeedModule,
-    CitySeedModule,
-    BloodGroupSeedModule,
-    QuestionSeedModule,
   ],
 })
 export class SeedModule {}
