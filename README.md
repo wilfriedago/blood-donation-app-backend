@@ -1,4 +1,4 @@
-# NestJS REST API boilerplate 🇺🇦
+# NestJS REST API boilerplate
 
 ## Description
 
@@ -8,13 +8,18 @@ NestJS REST API boilerplate for typical project
 
 ## Table of Contents
 
-- [Features](#features)
-- [Quick run](#quick-run)
-- [Comfortable development](#comfortable-development)
-- [Links](#links)
-- [Automatic update of dependencies](#automatic-update-of-dependencies)
-- [Database utils](#database-utils)
-- [Tests](#tests)
+- [NestJS REST API boilerplate](#nestjs-rest-api-boilerplate)
+  - [Description](#description)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Quick run](#quick-run)
+  - [Comfortable development](#comfortable-development)
+  - [Links](#links)
+  - [Automatic update of dependencies](#automatic-update-of-dependencies)
+  - [Database utils](#database-utils)
+  - [Tests](#tests)
+  - [Tests in Docker](#tests-in-docker)
+  - [Test benchmarking](#test-benchmarking)
 
 ## Features
 
@@ -77,9 +82,9 @@ npm run start:dev
 
 ## Links
 
-- Swagger: http://localhost:3000/docs
-- Adminer (client for DB): http://localhost:8080
-- Maildev: http://localhost:1080
+- Swagger: <http://localhost:8002/docs>
+- Adminer (client for DB): <http://localhost:8080>
+- Maildev: <http://localhost:1080>
 
 ## Automatic update of dependencies
 
