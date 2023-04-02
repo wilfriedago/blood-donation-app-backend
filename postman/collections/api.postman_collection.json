@@ -2,6 +2,7 @@
   "info": {
     "_postman_id": "e54138f1-6f7a-4c98-8609-5c973516bcdf",
     "name": "Blood Donation App API",
+    "description": "# Blood donation app API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -23,9 +24,7 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Updated bearerToken\", function () {",
-                      "    var response = pm.response.json();",
-                      "",
-                      "    pm.environment.set(\"bearerToken\", response.token);",
+                      "    pm.variables.set(\"bearerToken\", pm.response.json().token);",
                       "});",
                       ""
                     ],
@@ -48,14 +47,7 @@
                 "url": {
                   "raw": "{{baseUrl}}{{apiVersion}}/auth/email/login",
                   "host": ["{{baseUrl}}{{apiVersion}}"],
-                  "path": ["auth", "email", "login"],
-                  "query": [
-                    {
-                      "key": "",
-                      "value": null,
-                      "disabled": true
-                    }
-                  ]
+                  "path": ["auth", "email", "login"]
                 }
               },
               "response": [
@@ -165,9 +157,7 @@
                   "script": {
                     "exec": [
                       "pm.test(\"Updated bearerToken\", function () {",
-                      "    var response = pm.response.json();",
-                      "",
-                      "    pm.environment.set(\"bearerToken\", response.token);",
+                      "    pm.variables.set(\"bearerToken\", pm.response.json().token);",
                       "});",
                       ""
                     ],
@@ -180,7 +170,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"email\": \"\",\n    \"password\": \"\"\n}",
+                  "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"secret\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -220,6 +210,28 @@
                   "body": null
                 }
               ]
+            },
+            {
+              "name": "Register new user",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"bloodbank1@gmail.com\",\n    \"password\": \"azerty1234\",\n    \"firtName\": \"wilfried\",\n    \"lastName\": \"AGO\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}{{apiVersion}}/auth/email/register",
+                  "host": ["{{baseUrl}}{{apiVersion}}"],
+                  "path": ["auth", "email", "register"]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -263,19 +275,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}{{apiVersion}}/users?page=1&limit=2",
+              "raw": "{{baseUrl}}{{apiVersion}}/users",
               "host": ["{{baseUrl}}{{apiVersion}}"],
-              "path": ["users"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "2"
-                }
-              ]
+              "path": ["users"]
             }
           },
           "response": []
@@ -286,9 +288,15 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}{{apiVersion}}/users/1",
+              "raw": "{{baseUrl}}{{apiVersion}}/users/:id",
               "host": ["{{baseUrl}}{{apiVersion}}"],
-              "path": ["users", "1"]
+              "path": ["users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
             }
           },
           "response": []
@@ -466,6 +474,10 @@
     {
       "name": "Rewards",
       "item": []
+    },
+    {
+      "name": "Roles",
+      "item": []
     }
   ],
   "auth": {
@@ -483,7 +495,16 @@
       "listen": "prerequest",
       "script": {
         "type": "text/javascript",
-        "exec": ["pm.environment.get(\"bearerToken\");"]
+        "exec": [
+          "// Set Accept header to application/json",
+          "pm.request.headers.upsert({",
+          "    key: \"Accept\",",
+          "    value: \"application/json\"",
+          "});",
+          "",
+          "// Get Bearer token from variables",
+          "pm.variables.get(\"bearerToken\");"
+        ]
       }
     },
     {
@@ -503,6 +524,11 @@
     {
       "key": "apiVersion",
       "value": "v1",
+      "type": "default"
+    },
+    {
+      "key": "bearerToken",
+      "value": "",
       "type": "default"
     }
   ]
